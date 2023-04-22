@@ -1,0 +1,54 @@
+
+#board {
+    height: fit-content;
+    width: fit-content;
+    background: $dark-green;
+    padding: 20px;
+}
+.board-row {
+    height: $cell-size + px;
+    margin: 1px;
+    display: flex;
+    flex-wrap: nowrap;
+}
+.cell {
+    height: $cell-size + px;
+    width: $cell-size + px;
+    background: $light-green;
+    margin: 1px;
+    display: inline-block;
+}
+.tripple-word {
+    background: $red;
+}
+.tripple-letter {
+    background: $blue-tripple;
+}
+.double-word, .star {
+    background: $orange;
+}
+.double-letter {
+    background: $blue-double;
+}
+.letter {
+    height: $cell-size + px;
+    width: $cell-size + px;
+    background: $letter-bg;
+    color: $letter;
+    border-radius: 3px;
+    position: relative;
+}
+.letter p {
+    margin: 0;
+    font-weight: bolder;
+    font-size: 24px;
+    margin-left: 8px;
+    line-height: $cell-size - 5px;
+}
+.letter .value {
+    font-size: 11px;
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    line-height: 11px;
+}
