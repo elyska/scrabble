@@ -1,50 +1,66 @@
 <template>
-    <div class="cell" :class="cellType">
-        <letter v-if="x === 2 && y === 10 || x === 5 && y === 9" letter="A" :value="3"></letter>
+    <div class="cell drop-zone" :class="cellType" @drop="onDrop($event)" @dragover="handleDragover($event)" @dragenter.prevent>
+        <letter v-if="tile.letter" :tile="tile"></letter>
     </div>
 </template>
 
 <script>
 export default {
     props: {
-        title: String,
-        x: Number,
-        y: Number,
+        tile: Object
     },
     data() {
         return {
-            message: 'Hello Vue!'
+
         }
     },
     computed: {
         cellType() {
-            if ( (this.x === 0 || this.x === 7 || this.x === 14) && (this.y === 0 || this.y === 14) ||
-                 (this.x === 0 || this.x === 14 ) && this.y === 7 ) return "tripple-word"
+            if ( (this.tile.x === 0 || this.tile.x === 7 || this.tile.x === 14) && (this.tile.y === 0 || this.tile.y === 14) ||
+                 (this.tile.x === 0 || this.tile.x === 14 ) && this.tile.y === 7 ) return "tripple-word"
 
-            if ( (this.x === 1 || this.x === 13) && (this.y === 1 || this.y === 13) ||
-                 (this.x === 2 || this.x === 12) && (this.y === 2 || this.y === 12) ||
-                 (this.x === 3 || this.x === 11) && (this.y === 3 || this.y === 11) ||
-                 (this.x === 4 || this.x === 10) && (this.y === 4 || this.y === 10) ) return "double-word"
+            if ( (this.tile.x === 1 || this.tile.x === 13) && (this.tile.y === 1 || this.tile.y === 13) ||
+                 (this.tile.x === 2 || this.tile.x === 12) && (this.tile.y === 2 || this.tile.y === 12) ||
+                 (this.tile.x === 3 || this.tile.x === 11) && (this.tile.y === 3 || this.tile.y === 11) ||
+                 (this.tile.x === 4 || this.tile.x === 10) && (this.tile.y === 4 || this.tile.y === 10) ) return "double-word"
 
-            if ( (this.x === 3 || this.x === 11) && (this.y === 0 || this.y === 14) ||
-                 (this.x === 6 || this.x === 8) && (this.y === 2 || this.y === 12) ||
-                 (this.x === 0 || this.x === 7 || this.x === 14) && (this.y === 3 || this.y === 11) ||
-                 (this.x === 2 || this.x === 6 || this.x === 8 || this.x === 12) && (this.y === 6 || this.y === 8) ||
-                 (this.x === 3 || this.x === 11) && (this.y === 7)) return "double-letter"
+            if ( (this.tile.x === 3 || this.tile.x === 11) && (this.tile.y === 0 || this.tile.y === 14) ||
+                 (this.tile.x === 6 || this.tile.x === 8) && (this.tile.y === 2 || this.tile.y === 12) ||
+                 (this.tile.x === 0 || this.tile.x === 7 || this.tile.x === 14) && (this.tile.y === 3 || this.tile.y === 11) ||
+                 (this.tile.x === 2 || this.tile.x === 6 || this.tile.x === 8 || this.tile.x === 12) && (this.tile.y === 6 || this.tile.y === 8) ||
+                 (this.tile.x === 3 || this.tile.x === 11) && (this.tile.y === 7)) return "double-letter"
 
-            if ( (this.x === 5 || this.x === 9) && (this.y === 1 || this.y === 13) ||
-                 (this.x === 1 || this.x === 5 || this.x === 9 || this.x === 13) && (this.y === 5 || this.y === 9)
+            if ( (this.tile.x === 5 || this.tile.x === 9) && (this.tile.y === 1 || this.tile.y === 13) ||
+                 (this.tile.x === 1 || this.tile.x === 5 || this.tile.x === 9 || this.tile.x === 13) && (this.tile.y === 5 || this.tile.y === 9)
                ) return "tripple-letter"
 
-            if ( this.x === 7 && this.y === 7 ) return "star"
+            if ( this.tile.x === 7 && this.tile.y === 7 ) return "star"
 
             return ""
         }
     },
+    methods: {
+        onDrop(evt) {
+            // check if field is empty
+            if (this.tile.letter !== null) return
+
+            // place tile in the new position
+            const letter = evt.dataTransfer.getData('letter')
+            const value = evt.dataTransfer.getData('value')
+            this.tile.letter = letter;
+            this.tile.value = value;
+
+            // update board
+            const x = evt.dataTransfer.getData('x')
+            const y = evt.dataTransfer.getData('y')
+            this.$emit('tileMoved', {x: x, y: y})
+        },
+        handleDragover(e) {
+            if (this.tile.letter === null) e.preventDefault()
+        }
+    },
     mounted() {
         console.log('Cell mounted.')
-        console.log(this.x)
-        console.log(this.y)
     }
 }
 </script>

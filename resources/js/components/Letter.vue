@@ -1,19 +1,37 @@
 <template>
-    <div class="letter">
-        <p>{{letter}}</p>
-        <p class="value">{{value}}</p>
+    <div
+        class="letter drag-el"
+        draggable
+        @dragstart="startDrag($event, tile)"
+    >
+        <p>{{ tile.letter }}</p>
+        <p class="value">{{ tile.value }}</p>
     </div>
+        <!--    <div class="letter">-->
+<!--        <p>{{letter}}</p>-->
+<!--        <p class="value">{{value}}</p>-->
+<!--    </div>-->
 </template>
 
 <script>
 export default {
     props: {
-        letter: String,
-        value: Number
+        tile: Object
     },
     data() {
         return {
-            message: 'Hello Vue!'
+        }
+    },
+    computed: {
+    },
+    methods: {
+        startDrag(evt, item) {
+            evt.dataTransfer.dropEffect = 'move'
+            evt.dataTransfer.effectAllowed = 'move'
+            evt.dataTransfer.setData('x', item.x)
+            evt.dataTransfer.setData('y', item.y)
+            evt.dataTransfer.setData('letter', item.letter)
+            evt.dataTransfer.setData('value', item.value)
         }
     },
     mounted() {
