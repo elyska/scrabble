@@ -7,10 +7,6 @@
         <p>{{ tile.letter }}</p>
         <p class="value">{{ tile.value }}</p>
     </div>
-        <!--    <div class="letter">-->
-<!--        <p>{{letter}}</p>-->
-<!--        <p class="value">{{value}}</p>-->
-<!--    </div>-->
 </template>
 
 <script>
@@ -35,7 +31,7 @@ export default {
         }
     },
     mounted() {
-        console.log('Board mounted.')
+        console.log('Letter mounted.')
     }
 }
 </script>

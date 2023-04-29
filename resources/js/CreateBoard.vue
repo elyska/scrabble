@@ -21,36 +21,6 @@ export default {
                 row = []
             }
             return board
-                // [
-                // [
-                //     {
-                //         letter: "A",
-                //         value: 1,
-                //         x: 0,
-                //         y: 0
-                //     },
-                //     {
-                //         letter: null,
-                //         value: null,
-                //         x: 1,
-                //         y: 0
-                //     },
-                // ],
-                //     [
-                //         {
-                //             letter: null,
-                //             value: null,
-                //             x: 0,
-                //             y: 1
-                //         },
-                //         {
-                //             letter: "B",
-                //             value: 3,
-                //             x: 1,
-                //             y: 1
-                //         }
-                //     ],
-                // ]
         }
     }
 }
