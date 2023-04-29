@@ -5352,7 +5352,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _CreateBoard_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../CreateBoard.vue */ "./resources/js/CreateBoard.vue");
+//
+//
+//
 //
 //
 //
@@ -5368,18 +5370,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 //const createBoard = require('../CreateBoard.vue').default
+//import createBoard from "../CreateBoard.vue";
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mixins: [(__webpack_require__(/*! ../CreateBoard.vue */ "./resources/js/CreateBoard.vue")["default"])],
   data: function data() {
     return {
-      board: this.createBoard()
+      board: this.createBoard(),
+      tiles: [{
+        letter: "S",
+        value: 1,
+        x: 0,
+        y: 15
+      }, {
+        letter: null,
+        value: null,
+        x: 1,
+        y: 15
+      }]
     };
   },
   methods: {
-    handleTileMoved: function handleTileMoved(position) {
-      this.board[position.y][position.x].letter = null;
-      this.board[position.y][position.x].value = null;
+    handleTileMovedToBoard: function handleTileMovedToBoard(position) {
+      console.log("less 15");
+      if (position.y < 15) {
+        this.board[position.y][position.x].letter = null;
+        this.board[position.y][position.x].value = null;
+      }
+      if (position.y == 15) {
+        this.tiles[position.x].letter = null;
+        this.tiles[position.x].value = null;
+      }
+    },
+    handleTileMovedtoRack: function handleTileMovedtoRack(position) {
+      console.log("equal 15");
+      this.tiles[position.x].letter = null;
+      this.tiles[position.x].value = null;
     }
   },
   mounted: function mounted() {
@@ -5566,20 +5592,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: {},
+  props: {
+    tiles: Array
+  },
   data: function data() {
     return {};
   },
   computed: {},
-  methods: {},
+  methods: {
+    handleTileMoved: function handleTileMoved(position) {
+      this.tiles[position.x].letter = null;
+      this.tiles[position.x].value = null;
+    }
+  },
   mounted: function mounted() {
     console.log('Rack mounted.');
   }
@@ -28794,22 +28821,34 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { attrs: { id: "board" } },
-    _vm._l(_vm.board, function (row) {
-      return _c(
+    { staticClass: "row justify-content-center" },
+    [
+      _c(
         "div",
-        { staticClass: "board-row" },
-        _vm._l(row, function (cell) {
-          return _c("cell", {
-            key: cell.x + cell.y,
-            attrs: { tile: cell },
-            on: { tileMoved: _vm.handleTileMoved },
-          })
+        { attrs: { id: "board" } },
+        _vm._l(_vm.board, function (row) {
+          return _c(
+            "div",
+            { staticClass: "board-row" },
+            _vm._l(row, function (cell) {
+              return _c("cell", {
+                key: cell.x + cell.y,
+                attrs: { tile: cell },
+                on: { tileMoved: _vm.handleTileMovedToBoard },
+              })
+            }),
+            1
+          )
         }),
-        1
-      )
-    }),
-    0
+        0
+      ),
+      _vm._v(" "),
+      _c("rack", {
+        attrs: { tiles: _vm.tiles },
+        on: { tileMoved: _vm.handleTileMovedtoRack },
+      }),
+    ],
+    1
   )
 }
 var staticRenderFns = []
@@ -28966,35 +29005,10 @@ var render = function () {
   return _c("div", { staticClass: "rack" }, [
     _c(
       "div",
-      {
-        staticClass: "letters",
-        on: {
-          drop: function ($event) {
-            return _vm.onDrop($event)
-          },
-          dragover: function ($event) {
-            $event.preventDefault()
-          },
-          dragenter: function ($event) {
-            $event.preventDefault()
-          },
-        },
-      },
-      [
-        _c("letter", { attrs: { tile: { letter: "C", value: 5 } } }),
-        _vm._v(" "),
-        _c("letter", { attrs: { tile: { letter: "A", value: 4 } } }),
-        _vm._v(" "),
-        _c("letter", { attrs: { tile: { letter: "N", value: 1 } } }),
-        _vm._v(" "),
-        _c("letter", { attrs: { tile: { letter: "D", value: 1 } } }),
-        _vm._v(" "),
-        _c("letter", { attrs: { tile: { letter: "Á", value: 2 } } }),
-        _vm._v(" "),
-        _c("letter", { attrs: { tile: { letter: "T", value: 10 } } }),
-        _vm._v(" "),
-        _c("letter", { attrs: { tile: { letter: "", value: "" } } }),
-      ],
+      { staticClass: "letters" },
+      _vm._l(_vm.tiles, function (tile) {
+        return _c("cell", { key: tile.x, attrs: { tile: tile } })
+      }),
       1
     ),
     _vm._v(" "),

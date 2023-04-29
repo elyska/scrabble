@@ -2,10 +2,6 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <board></board>
-        <rack></rack>
-    </div>
-
+    <board></board>
 </div>
 @endsection
