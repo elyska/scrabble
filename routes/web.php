@@ -32,5 +32,5 @@ Route::middleware([EnsureUserIsPlayer::class])->group(function () {
 
     Route::get('/game/{gameId}', [App\Http\Controllers\GameController::class, 'getGame'])->name('game');
     Route::get('/rack/{gameId}', [App\Http\Controllers\GameController::class, 'getRack'])->name('rack');
-
+    Route::get('/board/{gameId}', [App\Http\Controllers\GameController::class, 'getBoard'])->name('board');
 });

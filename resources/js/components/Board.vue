@@ -48,10 +48,24 @@ export default {
                     this.rack = response.data
                 })
                 .catch(error => console.log(error))
+        },
+        loadBoard() {
+            let board = []
+            axios
+                .get('/board/' + this.gameId)
+                .then(response => {
+                    board = response.data
+                    for (let tile of board) {
+                        this.board[tile.y][tile.x].letter = tile.letter
+                        this.board[tile.y][tile.x].value = tile.value
+                    }
+                })
+                .catch(error => console.log(error))
         }
     },
     mounted() {
         this.loadRack()
+        this.loadBoard()
     }
 }
 </script>

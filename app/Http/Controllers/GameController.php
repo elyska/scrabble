@@ -78,20 +78,29 @@ class GameController extends Controller
 
         Rack::where("gameId", $gameId)->where("user", $user)->where("x", $x)->where("y", 15)->update(['letter' => $letter, "value" => $value]);
     }
+
     public function updateBoard(Request $request, $gameId) {
         $x = $request->input("x");
         $y = $request->input("y");
         $letter = $request->input("letter");
         $value = $request->input("value");
+
         if ($letter === null) {
             Board::where("gameId", $gameId)->where("x", $x)->where("y", $y)->delete();
         }
         else {
+            // do not add record if there is another tile at this location (not handled on frontend)
+            $board = Board::where("gameId", $gameId)->where("x", $x)->where("y", $y)->get();
+            if (count($board) > 0)  return response("Space is taken", 400);
+
             Board::create([
                 "gameId" => $gameId, "x" => $x, "y" => $y, "letter" => $letter, "value" => $value
             ]);
         }
-
+    }
+    public function getBoard($gameId) {
+        $board = Board::where("gameId", $gameId)->get();
+        return $board;
     }
 
 }

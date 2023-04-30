@@ -50,9 +50,11 @@ export default {
                     y: y
                 })
                 .then(response => {
-                    //console.log(response.data)
+                    return response.data
                 })
-                .catch(error => console.log(error))
+                .catch(error => {
+                    return false
+                })
         }
     }
 }
