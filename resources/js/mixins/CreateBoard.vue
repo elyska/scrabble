@@ -5,6 +5,10 @@
 <script>
 export default {
     methods: {
+        createAlphabet() {
+            return [
+            ]
+        },
         createBoard() {
             let board = []
             let row = []
@@ -21,6 +25,18 @@ export default {
                 row = []
             }
             return board
+        },
+        createRack() {
+            let rack = []
+            for (let x = 0; x < 8; x++) {
+                rack.push({
+                    letter: null,
+                    value: null,
+                    x: x,
+                    y: 15
+                })
+            }
+            return rack
         }
     }
 }

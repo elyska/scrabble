@@ -5,7 +5,7 @@
         @dragstart="startDrag($event, tile)"
     >
         <p>{{ tile.letter }}</p>
-        <p class="value">{{ tile.value }}</p>
+        <p class="value" v-if="tile.value !== 0">{{ tile.value }}</p>
     </div>
 </template>
 

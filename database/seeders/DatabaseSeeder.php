@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Alphabet;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,5 +16,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
+
+        // Alphabet
+        Alphabet::truncate();
+        $sql = file_get_contents('alphabet-insert.sql');
+        DB::unprepared($sql);
     }
 }

@@ -11,7 +11,7 @@
   --bs-purple: #6f42c1;
   --bs-pink: #d63384;
   --bs-red: #f33e3d;
-  --bs-orange: #ffc288;
+  --bs-orange: #ffb268;
   --bs-yellow: #ffc107;
   --bs-green: #198754;
   --bs-teal: #20c997;
@@ -10802,11 +10802,15 @@ textarea.form-control-lg {
 }
 
 .double-word, .star {
-  background: #ffc288;
+  background: #ffb268;
 }
 
 .double-letter {
   background: #a5e6ff;
+}
+
+.rack-cell {
+  background: #047171;
 }
 
 .letter {

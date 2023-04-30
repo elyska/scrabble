@@ -17,25 +17,62 @@
 <script>
 export default {
     mixins: [
-        require('../CreateBoard.vue').default
+        require('../mixins/CreateBoard.vue').default
     ],
     data() {
         return {
             board: this.createBoard(),
-            tiles: [
-                {
-                    letter: "S",
-                    value: 1,
-                    x: 0,
-                    y: 15
-                },
-                {
-                    letter: null,
-                    value: null,
-                    x: 1,
-                    y: 15
-                }
-            ]
+            tiles: this.createRack(),
+                // [
+                //     {
+                //         letter: "S",
+                //         value: 1,
+                //         x: 0,
+                //         y: 15
+                //     },
+                //     {
+                //         letter: null,
+                //         value: null,
+                //         x: 1,
+                //         y: 15
+                //     },
+                //     {
+                //         letter: null,
+                //         value: null,
+                //         x: 2,
+                //         y: 15
+                //     },
+                //     {
+                //         letter: "Ž",
+                //         value: 4,
+                //         x: 3,
+                //         y: 15
+                //     },
+                //     {
+                //         letter: null,
+                //         value: null,
+                //         x: 4,
+                //         y: 15
+                //     },
+                //     {
+                //         letter: "E",
+                //         value: 1,
+                //         x: 5,
+                //         y: 15
+                //     },
+                //     {
+                //         letter: "",
+                //         value: 0,
+                //         x: 6,
+                //         y: 15
+                //     },
+                //     {
+                //         letter: "B",
+                //         value: 3,
+                //         x: 7,
+                //         y: 15
+                //     }
+                // ]
         }
     },
     methods: {

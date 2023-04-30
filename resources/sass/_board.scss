@@ -31,6 +31,10 @@
 .double-letter {
     background: $blue-double;
 }
+.rack-cell {
+    background: $rack-dark-green;
+}
+
 .letter {
     height: $cell-size + px;
     width: $cell-size + px;

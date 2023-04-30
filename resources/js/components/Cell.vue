@@ -1,6 +1,6 @@
 <template>
     <div class="cell drop-zone" :class="cellType" @drop="onDrop($event)" @dragover="handleDragover($event)" @dragenter.prevent>
-        <letter v-if="tile.letter" :tile="tile"></letter>
+        <letter v-if="tile.letter !== null" :tile="tile"></letter>
     </div>
 </template>
 
@@ -36,6 +36,8 @@ export default {
 
             if ( this.tile.x === 7 && this.tile.y === 7 ) return "star"
 
+            if ( this.tile.y === 15 ) return "rack-cell"
+
             return ""
         }
     },
@@ -48,7 +50,7 @@ export default {
             const letter = evt.dataTransfer.getData('letter')
             const value = evt.dataTransfer.getData('value')
             this.tile.letter = letter;
-            this.tile.value = value;
+            this.tile.value = parseInt(value);
 
             // update board
             const x = evt.dataTransfer.getData('x')
