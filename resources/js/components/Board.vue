@@ -5,19 +5,16 @@
                 <cell v-for="cell in row"
                       :key="cell.x + cell.y"
                       :tile="cell"
-                      @tileMoved="handleTileMovedToBoard"
+                      @tileMoved="handleTileMoved"
                 >
                 </cell>
             </div>
         </div>
-        <rack :tiles="tiles" @tileMoved="handleTileMovedtoRack"></rack>
+        <rack :tiles="tiles" @rackTileMoved="handleTileMoved"></rack>
     </div>
 </template>
 
 <script>
-//const createBoard = require('../CreateBoard.vue').default
-//import createBoard from "../CreateBoard.vue";
-
 export default {
     mixins: [
         require('../CreateBoard.vue').default
@@ -42,24 +39,19 @@ export default {
         }
     },
     methods: {
-        handleTileMovedToBoard(position) {
-                console.log("less 15")
+        handleTileMoved(position) {
+            // moved from board (original y position is less than 15)
             if (position.y < 15) {
                 this.board[position.y][position.x].letter = null
                 this.board[position.y][position.x].value = null
             }
+            // moved from rack (original y position is 15)
             if (position.y == 15) {
                 this.tiles[position.x].letter = null
                 this.tiles[position.x].value = null
             }
 
         },
-        handleTileMovedtoRack(position) {
-                console.log("equal 15")
-                this.tiles[position.x].letter = null
-                this.tiles[position.x].value = null
-
-        }
     },
     mounted() {
         console.log('Board mounted.')

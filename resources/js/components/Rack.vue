@@ -1,7 +1,7 @@
 <template>
     <div class="rack">
         <div class="letters">
-            <cell v-for="tile in tiles" :key="tile.x" :tile="tile"></cell>
+            <cell v-for="tile in tiles" :key="tile.x" :tile="tile" @tileMoved="handleTileMoved"></cell>
         </div>
         <div class="bottom-rack"></div>
     </div>
@@ -21,8 +21,7 @@ export default {
     },
     methods: {
         handleTileMoved(position) {
-            this.tiles[position.x].letter = null
-            this.tiles[position.x].value = null
+            this.$emit('rackTileMoved', {x: position.x, y: position.y})
         },
     },
     mounted() {
