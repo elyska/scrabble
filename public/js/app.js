@@ -5334,76 +5334,36 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       board: this.createBoard(),
-      tiles: this.createRack()
-      // [
-      //     {
-      //         letter: "S",
-      //         value: 1,
-      //         x: 0,
-      //         y: 15
-      //     },
-      //     {
-      //         letter: null,
-      //         value: null,
-      //         x: 1,
-      //         y: 15
-      //     },
-      //     {
-      //         letter: null,
-      //         value: null,
-      //         x: 2,
-      //         y: 15
-      //     },
-      //     {
-      //         letter: "Ž",
-      //         value: 4,
-      //         x: 3,
-      //         y: 15
-      //     },
-      //     {
-      //         letter: null,
-      //         value: null,
-      //         x: 4,
-      //         y: 15
-      //     },
-      //     {
-      //         letter: "E",
-      //         value: 1,
-      //         x: 5,
-      //         y: 15
-      //     },
-      //     {
-      //         letter: "",
-      //         value: 0,
-      //         x: 6,
-      //         y: 15
-      //     },
-      //     {
-      //         letter: "B",
-      //         value: 3,
-      //         x: 7,
-      //         y: 15
-      //     }
-      // ]
+      rack: []
     };
   },
-
   methods: {
     handleTileMoved: function handleTileMoved(position) {
       // moved from board (original y position is less than 15)
       if (position.y < 15) {
         this.board[position.y][position.x].letter = null;
         this.board[position.y][position.x].value = null;
+        this.updateBoard(null, null, position.x, position.y);
       }
       // moved from rack (original y position is 15)
       if (position.y == 15) {
-        this.tiles[position.x].letter = null;
-        this.tiles[position.x].value = null;
+        this.rack[position.x].letter = null;
+        this.rack[position.x].value = null;
+        console.log("moved");
+        this.updateRack(null, null, position.x);
       }
+    },
+    loadRack: function loadRack() {
+      var _this = this;
+      axios.get('/rack/' + this.gameId).then(function (response) {
+        _this.rack = response.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
     }
   },
   mounted: function mounted() {
-    console.log('Board mounted.');
+    this.loadRack();
   }
 });
 
@@ -5428,6 +5388,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  mixins: [(__webpack_require__(/*! ../mixins/CreateBoard.vue */ "./resources/js/mixins/CreateBoard.vue")["default"])],
   props: {
     tile: Object
   },
@@ -5452,25 +5413,28 @@ __webpack_require__.r(__webpack_exports__);
 
       // place tile in the new position
       var letter = evt.dataTransfer.getData('letter');
-      var value = evt.dataTransfer.getData('value');
+      var value = parseInt(evt.dataTransfer.getData('value'));
       this.tile.letter = letter;
       this.tile.value = parseInt(value);
 
       // update board
-      var x = evt.dataTransfer.getData('x');
-      var y = evt.dataTransfer.getData('y');
+      var x = parseInt(evt.dataTransfer.getData('x'));
+      var y = parseInt(evt.dataTransfer.getData('y'));
       this.$emit('tileMoved', {
         x: x,
         y: y
       });
+      if (this.tile.y === 15) {
+        this.updateRack(letter, value, this.tile.x);
+      } else {
+        this.updateBoard(this.tile.letter, this.tile.value, this.tile.x, this.tile.y);
+      }
     },
     handleDragover: function handleDragover(e) {
       if (this.tile.letter === null) e.preventDefault();
     }
   },
-  mounted: function mounted() {
-    console.log('Cell mounted.');
-  }
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -5560,9 +5524,7 @@ __webpack_require__.r(__webpack_exports__);
       evt.dataTransfer.setData('value', item.value);
     }
   },
-  mounted: function mounted() {
-    console.log('Letter mounted.');
-  }
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -5604,9 +5566,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     }
   },
-  mounted: function mounted() {
-    console.log('Rack mounted.');
-  }
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -5628,10 +5588,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      gameId: $cookies.get("gameId")
+    };
+  },
   methods: {
-    createAlphabet: function createAlphabet() {
-      return [];
-    },
     createBoard: function createBoard() {
       var board = [];
       var row = [];
@@ -5649,17 +5611,30 @@ __webpack_require__.r(__webpack_exports__);
       }
       return board;
     },
-    createRack: function createRack() {
-      var rack = [];
-      for (var x = 0; x < 8; x++) {
-        rack.push({
-          letter: null,
-          value: null,
-          x: x,
-          y: 15
-        });
-      }
-      return rack;
+    updateRack: function updateRack(letter, value, x) {
+      console.log("updateRack", letter, x);
+      axios.post('/rack-update/' + this.gameId, {
+        letter: letter,
+        value: value,
+        x: x
+      }).then(function (response) {
+        //console.log(response.data)
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    updateBoard: function updateBoard(letter, value, x, y) {
+      console.log("updateBoard", letter, x, y);
+      axios.post('/board-update/' + this.gameId, {
+        letter: letter,
+        value: value,
+        x: x,
+        y: y
+      }).then(function (response) {
+        //console.log(response.data)
+      })["catch"](function (error) {
+        return console.log(error);
+      });
     }
   }
 });
@@ -5680,7 +5655,7 @@ __webpack_require__.r(__webpack_exports__);
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 window.Vue = (__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js")["default"]);
-
+Vue.use(__webpack_require__(/*! vue-cookies */ "./node_modules/vue-cookies/vue-cookies.js"));
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -28398,6 +28373,161 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
+/***/ "./node_modules/vue-cookies/vue-cookies.js":
+/*!*************************************************!*\
+  !*** ./node_modules/vue-cookies/vue-cookies.js ***!
+  \*************************************************/
+/***/ ((module) => {
+
+/**
+ * Vue Cookies v1.8.3
+ * https://github.com/cmp-cc/vue-cookies
+ *
+ * Copyright 2016, cmp-cc
+ * Released under the MIT license
+ */
+
+ (function () {
+
+  var defaultConfig = {
+    expires: '1d',
+    path: '; path=/',
+    domain: '',
+    secure: '',
+    sameSite: '; SameSite=Lax'
+  };
+
+  var VueCookies = {
+    // install of Vue
+    install: function (Vue, options) {
+      if (options) this.config(options.expires, options.path, options.domain, options.secure, options.sameSite);
+      if (Vue.prototype) Vue.prototype.$cookies = this;
+      if (Vue.config && Vue.config.globalProperties) {
+        Vue.config.globalProperties.$cookies = this;
+        Vue.provide('$cookies', this);
+      }
+      Vue.$cookies = this;
+    },
+    config: function (expires, path, domain, secure, sameSite) {
+      defaultConfig.expires = expires ? expires : '1d';
+      defaultConfig.path = path ? '; path=' + path : '; path=/';
+      defaultConfig.domain = domain ? '; domain=' + domain : '';
+      defaultConfig.secure = secure ? '; Secure' : '';
+      defaultConfig.sameSite = sameSite ? '; SameSite=' + sameSite : '; SameSite=Lax';
+    },
+    get: function (key) {
+      var value = decodeURIComponent(document.cookie.replace(new RegExp('(?:(?:^|.*;)\\s*' + encodeURIComponent(key).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=\\s*([^;]*).*$)|^.*$'), '$1')) || null;
+
+      if (value && ((value.substring(0, 1) === '{' && value.substring(value.length - 1, value.length) === '}') || (value.substring(0, 1) === '[' && value.substring(value.length - 1, value.length) === ']'))) {
+        try {
+          value = JSON.parse(value);
+        } catch (e) {
+          return value;
+        }
+      }
+      return value;
+    },
+    set: function (key, value, expires, path, domain, secure, sameSite) {
+      if (!key) {
+        throw new Error('Cookie name is not found in the first argument.');
+      } else if (/^(?:expires|max\-age|path|domain|secure|SameSite)$/i.test(key)) {
+        throw new Error('Cookie name illegality. Cannot be set to ["expires","max-age","path","domain","secure","SameSite"]\t current key name: ' + key);
+      }
+      // support json object
+      if (value && typeof value === 'object') {
+        value = JSON.stringify(value);
+      }
+      var _expires = '';
+      expires = expires == undefined ? defaultConfig.expires : expires;
+      if (expires && expires != 0) {
+        switch (expires.constructor) {
+          case Number:
+            if (expires === Infinity || expires === -1) _expires = '; expires=Fri, 31 Dec 9999 23:59:59 GMT';
+            else _expires = '; max-age=' + expires;
+            break;
+          case String:
+            if (/^(?:\d+(y|m|d|h|min|s))$/i.test(expires)) {
+              // get capture number group
+              var _expireTime = expires.replace(/^(\d+)(?:y|m|d|h|min|s)$/i, '$1');
+              // get capture type group , to lower case
+              switch (expires.replace(/^(?:\d+)(y|m|d|h|min|s)$/i, '$1').toLowerCase()) {
+                  // Frequency sorting
+                case 'm':
+                  _expires = '; max-age=' + +_expireTime * 2592000;
+                  break; // 60 * 60 * 24 * 30
+                case 'd':
+                  _expires = '; max-age=' + +_expireTime * 86400;
+                  break; // 60 * 60 * 24
+                case 'h':
+                  _expires = '; max-age=' + +_expireTime * 3600;
+                  break; // 60 * 60
+                case 'min':
+                  _expires = '; max-age=' + +_expireTime * 60;
+                  break; // 60
+                case 's':
+                  _expires = '; max-age=' + _expireTime;
+                  break;
+                case 'y':
+                  _expires = '; max-age=' + +_expireTime * 31104000;
+                  break; // 60 * 60 * 24 * 30 * 12
+                default:
+                  new Error('unknown exception of "set operation"');
+              }
+            } else {
+              _expires = '; expires=' + expires;
+            }
+            break;
+          case Date:
+            _expires = '; expires=' + expires.toUTCString();
+            break;
+        }
+      }
+      document.cookie =
+          encodeURIComponent(key) + '=' + encodeURIComponent(value) +
+          _expires +
+          (domain ? '; domain=' + domain : defaultConfig.domain) +
+          (path ? '; path=' + path : defaultConfig.path) +
+          (secure == undefined ? defaultConfig.secure : secure ? '; Secure' : '') +
+          (sameSite == undefined ? defaultConfig.sameSite : (sameSite ? '; SameSite=' + sameSite : ''));
+      return this;
+    },
+    remove: function (key, path, domain) {
+      if (!key || !this.isKey(key)) {
+        return false;
+      }
+      document.cookie = encodeURIComponent(key) +
+          '=; expires=Thu, 01 Jan 1970 00:00:00 GMT' +
+          (domain ? '; domain=' + domain : defaultConfig.domain) +
+          (path ? '; path=' + path : defaultConfig.path) +
+          '; SameSite=Lax';
+      return true;
+    },
+    isKey: function (key) {
+      return (new RegExp('(?:^|;\\s*)' + encodeURIComponent(key).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=')).test(document.cookie);
+    },
+    keys: function () {
+      if (!document.cookie) return [];
+      var _keys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, '').split(/\s*(?:\=[^;]*)?;\s*/);
+      for (var _index = 0; _index < _keys.length; _index++) {
+        _keys[_index] = decodeURIComponent(_keys[_index]);
+      }
+      return _keys;
+    }
+  };
+
+  if (true) {
+    module.exports = VueCookies;
+  } else {}
+  // vue-cookies can exist independently,no dependencies library
+  if (typeof window !== 'undefined') {
+    window.$cookies = VueCookies;
+  }
+
+})();
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Board.vue":
 /*!*******************************************!*\
   !*** ./resources/js/components/Board.vue ***!
@@ -28871,7 +29001,7 @@ var render = function () {
       ),
       _vm._v(" "),
       _c("rack", {
-        attrs: { tiles: _vm.tiles },
+        attrs: { tiles: _vm.rack },
         on: { rackTileMoved: _vm.handleTileMoved },
       }),
     ],

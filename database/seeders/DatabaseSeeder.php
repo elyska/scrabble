@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Alphabet;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -15,7 +16,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        // User
+        User::truncate();
+        User::factory()->create();
+        User::factory()->create([
+            "name" => "Protihráč",
+            "email" => "asd2@asd.com",
+        ]);
 
         // Alphabet
         Alphabet::truncate();

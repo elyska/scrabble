@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureUserIsPlayer;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +21,16 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// Game
+Route::post('/new-game', [App\Http\Controllers\GameController::class, 'createGame'])->name('new-game');
+
+Route::middleware([EnsureUserIsPlayer::class])->group(function () {
+
+    Route::post('/rack-update/{gameId}', [App\Http\Controllers\GameController::class, 'updateRack'])->name('rack-update');
+    Route::post('/board-update/{gameId}', [App\Http\Controllers\GameController::class, 'updateBoard'])->name('board-update');
+
+    Route::get('/game/{gameId}', [App\Http\Controllers\GameController::class, 'getGame'])->name('game');
+    Route::get('/rack/{gameId}', [App\Http\Controllers\GameController::class, 'getRack'])->name('rack');
+
+});

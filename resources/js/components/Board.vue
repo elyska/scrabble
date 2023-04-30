@@ -10,7 +10,7 @@
                 </cell>
             </div>
         </div>
-        <rack :tiles="tiles" @rackTileMoved="handleTileMoved"></rack>
+        <rack :tiles="rack" @rackTileMoved="handleTileMoved"></rack>
     </div>
 </template>
 
@@ -22,57 +22,7 @@ export default {
     data() {
         return {
             board: this.createBoard(),
-            tiles: this.createRack(),
-                // [
-                //     {
-                //         letter: "S",
-                //         value: 1,
-                //         x: 0,
-                //         y: 15
-                //     },
-                //     {
-                //         letter: null,
-                //         value: null,
-                //         x: 1,
-                //         y: 15
-                //     },
-                //     {
-                //         letter: null,
-                //         value: null,
-                //         x: 2,
-                //         y: 15
-                //     },
-                //     {
-                //         letter: "Ž",
-                //         value: 4,
-                //         x: 3,
-                //         y: 15
-                //     },
-                //     {
-                //         letter: null,
-                //         value: null,
-                //         x: 4,
-                //         y: 15
-                //     },
-                //     {
-                //         letter: "E",
-                //         value: 1,
-                //         x: 5,
-                //         y: 15
-                //     },
-                //     {
-                //         letter: "",
-                //         value: 0,
-                //         x: 6,
-                //         y: 15
-                //     },
-                //     {
-                //         letter: "B",
-                //         value: 3,
-                //         x: 7,
-                //         y: 15
-                //     }
-                // ]
+            rack: [],
         }
     },
     methods: {
@@ -81,17 +31,27 @@ export default {
             if (position.y < 15) {
                 this.board[position.y][position.x].letter = null
                 this.board[position.y][position.x].value = null
+                this.updateBoard(null, null, position.x, position.y)
             }
             // moved from rack (original y position is 15)
             if (position.y == 15) {
-                this.tiles[position.x].letter = null
-                this.tiles[position.x].value = null
+                this.rack[position.x].letter = null
+                this.rack[position.x].value = null
+                console.log("moved")
+                this.updateRack(null, null, position.x)
             }
-
         },
+        loadRack() {
+            axios
+                .get('/rack/' + this.gameId)
+                .then(response => {
+                    this.rack = response.data
+                })
+                .catch(error => console.log(error))
+        }
     },
     mounted() {
-        console.log('Board mounted.')
+        this.loadRack()
     }
 }
 </script>

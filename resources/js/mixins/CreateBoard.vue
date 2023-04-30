@@ -4,11 +4,12 @@
 
 <script>
 export default {
+    data() {
+        return {
+            gameId: $cookies.get("gameId"),
+        }
+    },
     methods: {
-        createAlphabet() {
-            return [
-            ]
-        },
         createBoard() {
             let board = []
             let row = []
@@ -26,17 +27,32 @@ export default {
             }
             return board
         },
-        createRack() {
-            let rack = []
-            for (let x = 0; x < 8; x++) {
-                rack.push({
-                    letter: null,
-                    value: null,
-                    x: x,
-                    y: 15
+        updateRack(letter, value, x) {
+            console.log("updateRack", letter, x)
+            axios
+                .post('/rack-update/' + this.gameId, {
+                    letter: letter,
+                    value: value,
+                    x: x
                 })
-            }
-            return rack
+                .then(response => {
+                    //console.log(response.data)
+                })
+                .catch(error => console.log(error))
+        },
+        updateBoard(letter, value, x, y) {
+            console.log("updateBoard", letter, x, y)
+            axios
+                .post('/board-update/' + this.gameId, {
+                    letter: letter,
+                    value: value,
+                    x: x,
+                    y: y
+                })
+                .then(response => {
+                    //console.log(response.data)
+                })
+                .catch(error => console.log(error))
         }
     }
 }

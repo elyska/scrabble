@@ -6,6 +6,9 @@
 
 <script>
 export default {
+    mixins: [
+        require('../mixins/CreateBoard.vue').default
+    ],
     props: {
         tile: Object
     },
@@ -48,21 +51,27 @@ export default {
 
             // place tile in the new position
             const letter = evt.dataTransfer.getData('letter')
-            const value = evt.dataTransfer.getData('value')
+            const value = parseInt(evt.dataTransfer.getData('value'))
             this.tile.letter = letter;
             this.tile.value = parseInt(value);
 
             // update board
-            const x = evt.dataTransfer.getData('x')
-            const y = evt.dataTransfer.getData('y')
+            const x = parseInt(evt.dataTransfer.getData('x'))
+            const y = parseInt(evt.dataTransfer.getData('y'))
             this.$emit('tileMoved', {x: x, y: y})
+
+            if (this.tile.y === 15) {
+                this.updateRack(letter, value, this.tile.x)
+            }
+            else {
+                this.updateBoard(this.tile.letter, this.tile.value, this.tile.x, this.tile.y)
+            }
         },
         handleDragover(e) {
             if (this.tile.letter === null) e.preventDefault()
         }
     },
     mounted() {
-        console.log('Cell mounted.')
     }
 }
 </script>
