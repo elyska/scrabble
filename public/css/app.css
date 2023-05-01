@@ -10838,6 +10838,10 @@ textarea.form-control-lg {
   line-height: 11px;
 }
 
+.refill-button {
+  margin: 20px;
+}
+
 .rack {
   width: 332px;
   height: 67px;
@@ -10865,4 +10869,9 @@ textarea.form-control-lg {
 
 .letters .letter {
   margin-right: 2px;
+}
+
+.rack-container {
+  width: -moz-max-content;
+  width: max-content;
 }

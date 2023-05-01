@@ -5331,6 +5331,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mixins: [(__webpack_require__(/*! ../mixins/CreateBoard.vue */ "./resources/js/mixins/CreateBoard.vue")["default"])],
@@ -5356,27 +5359,35 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         this.updateRack(null, null, position.x);
       }
     },
-    loadRack: function loadRack() {
+    handleRefill: function handleRefill() {
       var _this = this;
+      axios.post('/refill/' + this.gameId).then(function (response) {
+        _this.loadRack();
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    loadRack: function loadRack() {
+      var _this2 = this;
       axios.get('/rack/' + this.gameId).then(function (response) {
-        _this.rack = response.data;
+        _this2.rack = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     loadBoard: function loadBoard() {
-      var _this2 = this;
+      var _this3 = this;
       var board = [];
       axios.get('/board/' + this.gameId).then(function (response) {
         board = response.data;
-        _this2.board = _this2.createBoard();
+        _this3.board = _this3.createBoard();
         var _iterator = _createForOfIteratorHelper(board),
           _step;
         try {
           for (_iterator.s(); !(_step = _iterator.n()).done;) {
             var tile = _step.value;
-            _this2.board[tile.y][tile.x].letter = tile.letter;
-            _this2.board[tile.y][tile.x].value = tile.value;
+            _this3.board[tile.y][tile.x].letter = tile.letter;
+            _this3.board[tile.y][tile.x].value = tile.value;
           }
         } catch (err) {
           _iterator.e(err);
@@ -5390,19 +5401,19 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     }
   },
   mounted: function mounted() {
-    var _this3 = this;
+    var _this4 = this;
     this.loadRack();
     this.loadBoard();
     // tile dropped on board
     Echo["private"]("board.".concat(this.gameId)).listen('BoardUpdate', function (data) {
       console.log("BoardUpdate");
-      _this3.loadBoard();
+      _this4.loadBoard();
     });
     // tile moved to rack
     Echo["private"]("board-delete.".concat(this.gameId)).listen('BoardDelete', function (tile) {
       console.log("BoardDelete");
-      _this3.board[tile.y][tile.x].letter = null;
-      _this3.board[tile.y][tile.x].value = null;
+      _this4.board[tile.y][tile.x].letter = null;
+      _this4.board[tile.y][tile.x].value = null;
     });
   }
 });
@@ -5611,6 +5622,32 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/RefillButton.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/RefillButton.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  methods: {
+    refill: function refill() {
+      this.$emit('refill');
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/mixins/CreateBoard.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/mixins/CreateBoard.vue?vue&type=script&lang=js& ***!
@@ -5664,7 +5701,6 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     updateBoard: function updateBoard(letter, value, x, y) {
-      console.log("updateBoard", letter, x, y);
       axios.post('/board-update/' + this.gameId, {
         letter: letter,
         value: value,
@@ -5712,6 +5748,7 @@ Vue.component('board', (__webpack_require__(/*! ./components/Board.vue */ "./res
 Vue.component('cell', (__webpack_require__(/*! ./components/Cell.vue */ "./resources/js/components/Cell.vue")["default"]));
 Vue.component('letter', (__webpack_require__(/*! ./components/Letter.vue */ "./resources/js/components/Letter.vue")["default"]));
 Vue.component('rack', (__webpack_require__(/*! ./components/Rack.vue */ "./resources/js/components/Rack.vue")["default"]));
+Vue.component('refill-button', (__webpack_require__(/*! ./components/RefillButton.vue */ "./resources/js/components/RefillButton.vue")["default"]));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -35452,6 +35489,45 @@ component.options.__file = "resources/js/components/Rack.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/RefillButton.vue":
+/*!**************************************************!*\
+  !*** ./resources/js/components/RefillButton.vue ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _RefillButton_vue_vue_type_template_id_81e9161a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RefillButton.vue?vue&type=template&id=81e9161a& */ "./resources/js/components/RefillButton.vue?vue&type=template&id=81e9161a&");
+/* harmony import */ var _RefillButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RefillButton.vue?vue&type=script&lang=js& */ "./resources/js/components/RefillButton.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _RefillButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _RefillButton_vue_vue_type_template_id_81e9161a___WEBPACK_IMPORTED_MODULE_0__.render,
+  _RefillButton_vue_vue_type_template_id_81e9161a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/RefillButton.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/mixins/CreateBoard.vue":
 /*!*********************************************!*\
   !*** ./resources/js/mixins/CreateBoard.vue ***!
@@ -35571,6 +35647,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/RefillButton.vue?vue&type=script&lang=js&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/RefillButton.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RefillButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RefillButton.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/RefillButton.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RefillButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/mixins/CreateBoard.vue?vue&type=script&lang=js&":
 /*!**********************************************************************!*\
   !*** ./resources/js/mixins/CreateBoard.vue?vue&type=script&lang=js& ***!
@@ -35672,6 +35764,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/RefillButton.vue?vue&type=template&id=81e9161a&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/RefillButton.vue?vue&type=template&id=81e9161a& ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RefillButton_vue_vue_type_template_id_81e9161a___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RefillButton_vue_vue_type_template_id_81e9161a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RefillButton_vue_vue_type_template_id_81e9161a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RefillButton.vue?vue&type=template&id=81e9161a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/RefillButton.vue?vue&type=template&id=81e9161a&");
+
+
+/***/ }),
+
 /***/ "./resources/js/mixins/CreateBoard.vue?vue&type=template&id=fb82e5aa&":
 /*!****************************************************************************!*\
   !*** ./resources/js/mixins/CreateBoard.vue?vue&type=template&id=fb82e5aa& ***!
@@ -35705,37 +35814,41 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "row justify-content-center" },
-    [
-      _c(
-        "div",
-        { attrs: { id: "board" } },
-        _vm._l(_vm.board, function (row) {
-          return _c(
-            "div",
-            { staticClass: "board-row" },
-            _vm._l(row, function (cell) {
-              return _c("cell", {
-                key: cell.x + cell.y,
-                attrs: { tile: cell },
-                on: { tileMoved: _vm.handleTileMoved },
-              })
-            }),
-            1
-          )
-        }),
-        0
-      ),
-      _vm._v(" "),
-      _c("rack", {
-        attrs: { tiles: _vm.rack },
-        on: { rackTileMoved: _vm.handleTileMoved },
+  return _c("div", { staticClass: "row justify-content-center" }, [
+    _c(
+      "div",
+      { attrs: { id: "board" } },
+      _vm._l(_vm.board, function (row) {
+        return _c(
+          "div",
+          { staticClass: "board-row" },
+          _vm._l(row, function (cell) {
+            return _c("cell", {
+              key: cell.x + cell.y,
+              attrs: { tile: cell },
+              on: { tileMoved: _vm.handleTileMoved },
+            })
+          }),
+          1
+        )
       }),
-    ],
-    1
-  )
+      0
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "rack-container" },
+      [
+        _c("rack", {
+          attrs: { tiles: _vm.rack },
+          on: { rackTileMoved: _vm.handleTileMoved },
+        }),
+        _vm._v(" "),
+        _c("refill-button", { on: { refill: _vm.handleRefill } }),
+      ],
+      1
+    ),
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -35910,6 +36023,38 @@ var render = function () {
     _vm._v(" "),
     _c("div", { staticClass: "bottom-rack" }),
   ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/RefillButton.vue?vue&type=template&id=81e9161a&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/RefillButton.vue?vue&type=template&id=81e9161a& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "button",
+    {
+      staticClass: "btn btn-primary w-25 refill-button",
+      on: { click: _vm.refill },
+    },
+    [_vm._v("Doplnit písmena")]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

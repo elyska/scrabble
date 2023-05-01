@@ -10,7 +10,10 @@
                 </cell>
             </div>
         </div>
-        <rack :tiles="rack" @rackTileMoved="handleTileMoved"></rack>
+        <div class="rack-container">
+            <rack :tiles="rack" @rackTileMoved="handleTileMoved"></rack>
+            <refill-button @refill="handleRefill"></refill-button>
+        </div>
     </div>
 </template>
 
@@ -40,6 +43,14 @@ export default {
                 console.log("moved")
                 this.updateRack(null, null, position.x)
             }
+        },
+        handleRefill() {
+            axios
+                .post('/refill/' + this.gameId)
+                .then(response => {
+                    this.loadRack()
+                })
+                .catch(error => console.log(error))
         },
         loadRack() {
             axios

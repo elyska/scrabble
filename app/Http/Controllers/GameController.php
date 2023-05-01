@@ -91,7 +91,7 @@ class GameController extends Controller
 
         if ($letter === null) {
             Board::where("gameId", $gameId)->where("x", $x)->where("y", $y)->delete();
-            broadcast(new BoardDelete($user, $x, $y, $gameId));
+            broadcast(new BoardDelete($user, $x, $y, $gameId))->toOthers();
         }
         else {
             // do not add record if there is another tile at this location (not handled on frontend)
@@ -101,12 +101,29 @@ class GameController extends Controller
             $board = Board::create([
                 "gameId" => $gameId, "x" => $x, "y" => $y, "letter" => $letter, "value" => $value
             ]);
-            broadcast(new BoardUpdate($user, $board, $gameId));
+            broadcast(new BoardUpdate($user, $board, $gameId))->toOthers();
         }
     }
     public function getBoard($gameId) {
         $board = Board::where("gameId", $gameId)->get();
         return $board;
+    }
+
+    public function refillRack($gameId) {
+        $user = Auth::user()->name;
+
+        $emptySpaces = Rack::where("gameId", $gameId)->where("user", $user)->where("letter", null)->get();
+
+        for ($i = 0; $i < count($emptySpaces) - 1; $i++) {
+            // get from bag
+            $tile = Bag::where("gameId", $gameId)->inRandomOrder()->first();
+            // delete from bag
+            $tile->delete($tile);//$tile
+            // add to rack
+            $emptySpaces[$i]->letter = $tile->letter;
+            $emptySpaces[$i]->value = $tile->value;
+            $emptySpaces[$i]->save();
+        }
     }
 
 }

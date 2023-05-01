@@ -41,7 +41,6 @@ export default {
                 .catch(error => console.log(error))
         },
         updateBoard(letter, value, x, y) {
-            console.log("updateBoard", letter, x, y)
             axios
                 .post('/board-update/' + this.gameId, {
                     letter: letter,
