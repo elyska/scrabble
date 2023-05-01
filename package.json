@@ -24,6 +24,8 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "laravel-echo": "^1.15.1",
+        "pusher-js": "^8.0.2",
         "vue-cookies": "^1.8.3"
     }
 }

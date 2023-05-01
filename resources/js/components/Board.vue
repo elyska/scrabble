@@ -55,10 +55,12 @@ export default {
                 .get('/board/' + this.gameId)
                 .then(response => {
                     board = response.data
+                    this.board = this.createBoard()
                     for (let tile of board) {
                         this.board[tile.y][tile.x].letter = tile.letter
                         this.board[tile.y][tile.x].value = tile.value
                     }
+                    console.log("loading")
                 })
                 .catch(error => console.log(error))
         }
@@ -66,6 +68,12 @@ export default {
     mounted() {
         this.loadRack()
         this.loadBoard()
+        Echo.private('board')
+            .listen('BoardUpdate', (data) => {
+                console.log("task created")
+                console.log(data)
+                this.loadBoard()
+            });
     }
 }
 </script>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\BoardUpdate;
 use App\Helpers\RackHelper;
 use App\Models\Alphabet;
 use App\Models\Bag;
@@ -80,22 +81,34 @@ class GameController extends Controller
     }
 
     public function updateBoard(Request $request, $gameId) {
+        $user = Auth::user();
+
         $x = $request->input("x");
         $y = $request->input("y");
         $letter = $request->input("letter");
         $value = $request->input("value");
 
         if ($letter === null) {
+            //$board = Board::where("gameId", $gameId)->where("x", $x)->where("y", $y)->first();
             Board::where("gameId", $gameId)->where("x", $x)->where("y", $y)->delete();
+//            $board2 = new Board;
+//            $board2->gameId = $gameId;
+//            $board2->letter = $letter;
+//            $board2->value = $value;
+//            $board2->x = $x;
+//            $board2->y = $y;
+            //dd($board);
+            //broadcast(new BoardUpdate($user, $board))->toOthers();
         }
         else {
             // do not add record if there is another tile at this location (not handled on frontend)
             $board = Board::where("gameId", $gameId)->where("x", $x)->where("y", $y)->get();
             if (count($board) > 0)  return response("Space is taken", 400);
 
-            Board::create([
+            $board = Board::create([
                 "gameId" => $gameId, "x" => $x, "y" => $y, "letter" => $letter, "value" => $value
             ]);
+            broadcast(new BoardUpdate($user, $board));
         }
     }
     public function getBoard($gameId) {
