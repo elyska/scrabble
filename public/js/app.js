@@ -5362,6 +5362,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     handleRefill: function handleRefill() {
       var _this = this;
       axios.post('/refill/' + this.gameId).then(function (response) {
+        if (response.data.message) console.log(response.data.message);
         _this.loadRack();
       })["catch"](function (error) {
         return console.log(error);

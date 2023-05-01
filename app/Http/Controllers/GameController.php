@@ -117,8 +117,11 @@ class GameController extends Controller
         for ($i = 0; $i < count($emptySpaces) - 1; $i++) {
             // get from bag
             $tile = Bag::where("gameId", $gameId)->inRandomOrder()->first();
-            // delete from bag
-            $tile->delete($tile);//$tile
+            // if not empty, delete from bag
+            if (!$tile) return response()->json([
+                'message' => 'Žádná další písmena'
+            ]);;
+            $tile->delete($tile);
             // add to rack
             $emptySpaces[$i]->letter = $tile->letter;
             $emptySpaces[$i]->value = $tile->value;
