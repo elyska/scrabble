@@ -68,11 +68,18 @@ export default {
     mounted() {
         this.loadRack()
         this.loadBoard()
+        // tile mdropped on board
         Echo.private('board')
             .listen('BoardUpdate', (data) => {
-                console.log("task created")
-                console.log(data)
+                console.log("BoardUpdate")
                 this.loadBoard()
+            });
+        // tile moved to rack
+        Echo.private('board-delete')
+            .listen('BoardDelete', (tile) => {
+                console.log("BoardDelete")
+                this.board[tile.y][tile.x].letter = null
+                this.board[tile.y][tile.x].value = null
             });
     }
 }

@@ -19,5 +19,9 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('board', function ($user) {
-    return true;
+    return Auth::check();
+});
+
+Broadcast::channel('board-delete', function ($user) {
+    return Auth::check();
 });
