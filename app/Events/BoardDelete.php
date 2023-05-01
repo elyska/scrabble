@@ -18,16 +18,19 @@ class BoardDelete implements ShouldBroadcast
     public $user;
     public $x;
     public $y;
+    public $gameId;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(User $user, int $x, int $y)
+    public function __construct(User $user, int $x, int $y, int $gameId)
     {
         $this->user = $user;
         $this->x = $x;
         $this->y = $y;
+        $this->gameId = $gameId;
     }
 
     /**
@@ -37,6 +40,6 @@ class BoardDelete implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('board-delete');
+        return new PrivateChannel('board-delete.' . $this->gameId);
     }
 }

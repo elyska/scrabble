@@ -18,15 +18,17 @@ class BoardUpdate implements ShouldBroadcast
 
     public $user;
     public $board;
+    public $gameId;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(User $user, Board $board)
+    public function __construct(User $user, Board $board, int $gameId)
     {
         $this->user = $user;
         $this->board = $board;
+        $this->gameId = $gameId;
     }
 
     /**
@@ -36,6 +38,6 @@ class BoardUpdate implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('board');
+        return new PrivateChannel('board.' . $this->gameId);
     }
 }

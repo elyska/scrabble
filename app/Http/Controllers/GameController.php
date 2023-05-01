@@ -91,7 +91,7 @@ class GameController extends Controller
 
         if ($letter === null) {
             Board::where("gameId", $gameId)->where("x", $x)->where("y", $y)->delete();
-            broadcast(new BoardDelete($user, $x, $y));
+            broadcast(new BoardDelete($user, $x, $y, $gameId));
         }
         else {
             // do not add record if there is another tile at this location (not handled on frontend)
@@ -101,7 +101,7 @@ class GameController extends Controller
             $board = Board::create([
                 "gameId" => $gameId, "x" => $x, "y" => $y, "letter" => $letter, "value" => $value
             ]);
-            broadcast(new BoardUpdate($user, $board));
+            broadcast(new BoardUpdate($user, $board, $gameId));
         }
     }
     public function getBoard($gameId) {

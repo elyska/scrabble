@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Game;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
 
@@ -18,10 +20,18 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('board', function ($user) {
-    return Auth::check();
+Broadcast::channel('board.{gameId}', function ($user, $gameId) {
+    $game = Game::where("id", $gameId)->where(function (Builder $query) {
+        $user = Auth::user()->name;
+        $query->where("player1", $user)->orWhere("player2", $user);
+    })->get();
+    return count($game) != 0;
 });
 
-Broadcast::channel('board-delete', function ($user) {
-    return Auth::check();
+Broadcast::channel('board-delete.{gameId}', function ($user, $gameId) {
+    $game = Game::where("id", $gameId)->where(function (Builder $query) {
+        $user = Auth::user()->name;
+        $query->where("player1", $user)->orWhere("player2", $user);
+    })->get();
+    return count($game) != 0;
 });

@@ -5393,13 +5393,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     var _this3 = this;
     this.loadRack();
     this.loadBoard();
-    // tile mdropped on board
-    Echo["private"]('board').listen('BoardUpdate', function (data) {
+    // tile dropped on board
+    Echo["private"]("board.".concat(this.gameId)).listen('BoardUpdate', function (data) {
       console.log("BoardUpdate");
       _this3.loadBoard();
     });
     // tile moved to rack
-    Echo["private"]('board-delete').listen('BoardDelete', function (tile) {
+    Echo["private"]("board-delete.".concat(this.gameId)).listen('BoardDelete', function (tile) {
       console.log("BoardDelete");
       _this3.board[tile.y][tile.x].letter = null;
       _this3.board[tile.y][tile.x].value = null;
