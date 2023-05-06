@@ -10768,6 +10768,50 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+body {
+  background: url("/images/brown-wooden-flooring.jpg");
+  background-size: cover;
+  color: white;
+}
+
+.navbar {
+  background: transparent !important;
+  font-size: 16px;
+}
+
+.nav-link, .navbar-brand {
+  color: white !important;
+}
+.nav-link:hover, .navbar-brand:hover {
+  color: #dcffea !important;
+}
+
+.alert {
+  border: none;
+  border-radius: 20px;
+  padding: 5px;
+  text-align: center;
+}
+
+.alert-danger {
+  color: #f33e3d;
+}
+
+input[type=text], select, button {
+  border-radius: 30px !important;
+  padding: 10px 20px !important;
+  font-size: 18px !important;
+  border: none !important;
+}
+
+button[type=submit] {
+  background: #029a9b;
+  color: white;
+}
+button[type=submit]:hover {
+  background: #047171;
+}
+
 #board {
   height: -moz-fit-content;
   height: fit-content;

@@ -1,0 +1,44 @@
+body {
+    //background: url("/images/natural-wooden-background.jpg");
+    background: url("/images/brown-wooden-flooring.jpg");
+    background-size: cover;
+    color: white;
+}
+
+.navbar {
+    background: transparent !important;
+    font-size: 16px;
+}
+.nav-link, .navbar-brand {
+    color: white !important;
+    &:hover {
+        color: $lighter-green !important;
+    }
+}
+
+.alert {
+    border: none;
+    border-radius: 20px;
+    padding: 5px;
+    text-align: center;
+}
+
+.alert-danger {
+    color: $red;
+}
+
+input[type="text"], select, button {
+    border-radius: 30px !important;
+    padding: 10px 20px !important;
+    font-size: 18px !important;
+    border: none !important;
+}
+
+button[type="submit"] {
+    background: $rack-green;
+    color: white;
+
+    &:hover {
+        background: $rack-dark-green;
+    }
+}
