@@ -10816,11 +10816,11 @@ button[type=submit]:hover {
   background: #047171;
 }
 
-a {
+.link {
   color: white !important;
   font-size: 18px !important;
 }
-a:hover {
+.link:hover {
   text-decoration: none;
 }
 

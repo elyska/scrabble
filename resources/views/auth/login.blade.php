@@ -43,9 +43,9 @@
                         {{ __('Login') }}
                     </button>
                 </p>
-                @if (Route::has('password.request'))
+                @if (false && Route::has('password.request')) {{-- Password reset disabled--}}
                     <p class="mb-0 text-center">
-                        <a class="btn btn-link" href="{{ route('password.request') }}">
+                        <a class="btn btn-link link" href="{{ route('password.request') }}">
                             {{ __('Forgot Your Password?') }}
                         </a>
                     </p>

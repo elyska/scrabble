@@ -5,5 +5,21 @@
     "Opponent Name": "Jméno spoluhráče",
     "Language": "Jazyk",
     "Czech": "Čeština",
-    "Create Game": "Vytvořit hru"
+    "Create Game": "Vytvořit hru",
+    "Login": "Přihlášení",
+    "Register": "Registrace",
+    "Email Address": "Emailová adresa",
+    "Password": "Heslo",
+    "Confirm Password": "Heslo znovu",
+    "Remember Me": "Zapamatovat si mě",
+    "Forgot Your Password?": "Zapomenuté heslo",
+    "Name": "Jméno",
+    "Reset Password": "Obnovit heslo",
+    "Send Password Reset Link": "Poslat odkaz pro obnovu hesla",
+    "": "",
+    "": "",
+    "": "",
+    "": "",
+    "": "",
+    "": ""
 }
