@@ -22,10 +22,11 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/my-games', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/new-game', [App\Http\Controllers\HomeController::class, 'newGameForm'])->name('new-game');
 
 // Game
-Route::post('/new-game', [App\Http\Controllers\GameController::class, 'createGame'])->name('new-game');
+Route::post('/create-new-game', [App\Http\Controllers\GameController::class, 'createGame'])->name('create-new-game');
 
 Route::middleware([EnsureUserIsPlayer::class])->group(function () {
 

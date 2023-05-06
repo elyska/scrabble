@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Game;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -23,6 +26,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $user = Auth::user()->name;
+        $games = Game::where("player1", $user)->orWhere("player2", $user)->orderBy('created_at', 'desc')->get();
+        return view('my-games', [
+            "games" => $games
+        ]);
+    }
+
+    public function newGameForm() {
+        return view('new-game');
     }
 }

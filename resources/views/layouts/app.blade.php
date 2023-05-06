@@ -40,12 +40,12 @@
                         @auth
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('home') }}">
-                                    {{ __('New Game') }}
+                                    {{ __('My Games') }}
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('home') }}">
-                                    {{ __('My Games') }}
+                                <a class="nav-link" href="{{ route('new-game') }}">
+                                    {{ __('New Game') }}
                                 </a>
                             </li>
                         @endauth

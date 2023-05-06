@@ -10771,12 +10771,15 @@ textarea.form-control-lg {
 body {
   background: url("/images/brown-wooden-flooring.jpg");
   background-size: cover;
-  color: white;
 }
 
 .navbar {
   background: transparent !important;
   font-size: 16px;
+}
+
+h1, .h1 {
+  color: white;
 }
 
 .nav-link, .navbar-brand {
@@ -10806,6 +10809,7 @@ input:not(input[type=checkbox]), select, button {
 
 label {
   font-size: 18px;
+  color: white;
 }
 
 button[type=submit] {
@@ -10822,6 +10826,20 @@ button[type=submit]:hover {
 }
 .link:hover {
   text-decoration: none;
+}
+
+.filled-button-link {
+  background: #029a9b;
+  color: white;
+  border-radius: 30px !important;
+}
+.filled-button-link:hover {
+  background: #047171;
+  color: white;
+}
+
+.card {
+  border-radius: 30px !important;
 }
 
 #board {

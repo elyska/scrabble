@@ -2,12 +2,15 @@ body {
     //background: url("/images/natural-wooden-background.jpg");
     background: url("/images/brown-wooden-flooring.jpg");
     background-size: cover;
-    color: white;
 }
 
 .navbar {
     background: transparent !important;
     font-size: 16px;
+}
+
+h1 {
+    color: white;
 }
 .nav-link, .navbar-brand {
     color: white !important;
@@ -36,6 +39,7 @@ input:not(input[type="checkbox"]), select, button {
 
 label {
     font-size: 18px;
+    color: white;
 }
 
 button[type="submit"] {
@@ -54,4 +58,18 @@ button[type="submit"] {
     &:hover {
         text-decoration: none;
     }
+}
+
+.filled-button-link {
+    background: $rack-green;
+    color: white;
+    border-radius: 30px !important;
+
+    &:hover {
+        background: $rack-dark-green;
+        color: white;
+    }
+}
+.card {
+    border-radius: 30px !important;
 }
