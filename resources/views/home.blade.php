@@ -2,10 +2,11 @@
 
 @section('content')
 <div class="container">
+    <h1>{{ __('New Game') }}</h1>
     <form action="{{ route('new-game') }}" method="post">
         @csrf
         <p class="mb-3">
-            <label for="opponent" class="form-label">Jméno spoluhráče</label>
+            <label for="opponent" class="form-label">{{ __('Opponent Name') }}</label>
             <input class="form-control" type="text" name="opponent">
             @error('opponent')
                 <div class="alert alert-danger">{{ $message }}</div>
@@ -13,13 +14,13 @@
         </p>
 
         <p class="mb-3">
-            <label for="language" class="form-label">Jazyk</label>
+            <label for="language" class="form-label">{{ __('Language') }}</label>
             <select class="form-control"  name="language">
-                <option value="CS">Čeština</option>
+                <option value="CS">{{ __("Czech") }}</option>
             </select>
         </p>
 
-        <button class="btn btn-primary"  type="submit">Hrát</button>
+        <button class="btn btn-primary" type="submit">{{ __("Create Game") }}</button>
     </form>
 </div>
 @endsection

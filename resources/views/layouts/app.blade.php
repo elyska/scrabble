@@ -35,9 +35,51 @@
                     <ul class="navbar-nav me-auto">
 
                     </ul>
-
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('home') }}">
+                                {{ __('New Game') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('home') }}">
+                                {{ __('My Games') }}
+                            </a>
+                        </li>
+                        <!-- Language dropdown -->
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                @if(isset($_COOKIE["language"]) && $_COOKIE["language"] == "cs")
+                                    CS
+                                @elseif(isset($_COOKIE["language"]) && $_COOKIE["language"] == "en")
+                                    EN
+                                @endif
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('change-language') }}"
+                                   onclick="event.preventDefault();
+                                                     document.getElementById('language-form').submit();">
+                                    @if(isset($_COOKIE["language"]) && $_COOKIE["language"] == "cs")
+                                        EN
+                                    @elseif(isset($_COOKIE["language"]) && $_COOKIE["language"] == "en")
+                                        CS
+                                    @endif
+                                </a>
+
+                                <form id="language-form" action="{{ route('change-language') }}" method="POST" class="d-none">
+                                    @csrf
+                                    <input type="hidden" name="language"
+                                           value="@if(isset($_COOKIE["language"]) && $_COOKIE["language"] == "cs")
+                                                        en
+                                                  @elseif(isset($_COOKIE["language"]) && $_COOKIE["language"] == "en")
+                                                        cs
+                                                  @endif">
+                                </form>
+                            </div>
+                        </li>
+
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
@@ -56,6 +98,7 @@
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
+
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
