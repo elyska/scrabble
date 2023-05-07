@@ -26,7 +26,7 @@ Vue.component('board', require('./components/Board.vue').default);
 Vue.component('cell', require('./components/Cell.vue').default);
 Vue.component('letter', require('./components/Letter.vue').default);
 Vue.component('rack', require('./components/Rack.vue').default);
-Vue.component('refill-button', require('./components/RefillButton.vue').default);
+Vue.component('bag', require('./components/Bag.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

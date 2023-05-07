@@ -12,7 +12,7 @@
         </div>
         <div class="rack-container">
             <rack :tiles="rack" @rackTileMoved="handleTileMoved"></rack>
-            <refill-button @refill="handleRefill"></refill-button>
+            <bag @refill="handleRefill"></bag>
         </div>
     </div>
 </template>

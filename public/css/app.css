@@ -10858,6 +10858,7 @@ button[type=submit]:hover {
 
 .card {
   border-radius: 30px !important;
+  background: rgba(255, 255, 255, 0.6392156863);
 }
 
 #board {
@@ -10932,6 +10933,14 @@ button[type=submit]:hover {
 
 .refill-button {
   margin: 20px;
+}
+
+.bag {
+  width: 100%;
+  max-width: 350px;
+}
+.bag:hover {
+  cursor: pointer;
 }
 
 .rack {

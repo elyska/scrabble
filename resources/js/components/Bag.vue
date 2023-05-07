@@ -1,5 +1,5 @@
 <template>
-    <button class="btn btn-primary w-25 refill-button" @click="refill">Doplnit písmena</button>
+    <img src="/images/scrabble-bag.png" class="bag" @click="refill" />
 </template>
 
 <script>
