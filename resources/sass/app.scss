@@ -1,5 +1,10 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
+@font-face {
+    font-family: Scramble;
+    src: url("/fonts/Scramble.ttf");
+    //src: url("../../public/fonts/Scramble.ttf");
+}
 
 // Variables
 @import 'variables';
