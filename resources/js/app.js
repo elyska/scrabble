@@ -27,6 +27,7 @@ Vue.component('cell', require('./components/Cell.vue').default);
 Vue.component('letter', require('./components/Letter.vue').default);
 Vue.component('rack', require('./components/Rack.vue').default);
 Vue.component('bag', require('./components/Bag.vue').default);
+Vue.component('scoreboard', require('./components/Scoreboard.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

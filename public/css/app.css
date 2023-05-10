@@ -10976,3 +10976,29 @@ button[type=submit]:hover {
   width: -moz-max-content;
   width: max-content;
 }
+
+.scoreboard-container {
+  height: 100%;
+}
+
+.scoreboard {
+  background: white;
+  width: 100%;
+  text-align: center;
+  border-radius: 10px;
+  height: 100%;
+}
+.scoreboard th {
+  border-bottom: 1px solid grey;
+}
+.scoreboard td, .scoreboard th {
+  padding: 5px;
+  height: -moz-max-content;
+  height: max-content;
+}
+.scoreboard td:not(:last-child), .scoreboard th:not(:last-child) {
+  border-right: 1px solid grey;
+}
+.scoreboard tr:last-child td {
+  height: 100%;
+}

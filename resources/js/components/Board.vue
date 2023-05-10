@@ -1,6 +1,9 @@
 <template>
     <div class="row justify-content-center">
-        <div id="board">
+        <div class="col-2">
+            <scoreboard></scoreboard>
+        </div>
+        <div id="board" class="col-6">
             <div class="board-row" v-for="row in board">
                 <cell v-for="cell in row"
                       :key="cell.x + cell.y"
@@ -10,7 +13,7 @@
                 </cell>
             </div>
         </div>
-        <div class="rack-container">
+        <div class="rack-container col-4">
             <rack :tiles="rack" @rackTileMoved="handleTileMoved"></rack>
             <bag @refill="handleRefill"></bag>
         </div>

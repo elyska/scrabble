@@ -1,0 +1,34 @@
+.scoreboard-container {
+    //background: white;
+    //width: 100%;
+    //height: 100%;
+    //border-radius: 10px;
+    height: 100%;
+}
+.scoreboard {
+    background: white;
+    width: 100%;
+    text-align: center;
+    border-radius: 10px;
+    height: 100%;
+
+    tr {
+    }
+
+    th {
+        border-bottom: 1px solid grey;
+    }
+
+    td, th {
+        padding: 5px;
+        height: max-content;
+
+        &:not(:last-child) {
+            border-right: 1px solid grey;
+        }
+    }
+
+    tr:last-child td {
+        height: 100%;
+    }
+}
