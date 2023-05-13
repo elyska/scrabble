@@ -20,6 +20,14 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
+Broadcast::channel('draw.{gameId}', function ($user, $gameId) {
+    $game = Game::where("id", $gameId)->where(function (Builder $query) {
+        $user = Auth::user()->name;
+        $query->where("player1", $user)->orWhere("player2", $user);
+    })->get();
+    return count($game) != 0;
+});
+
 Broadcast::channel('board.{gameId}', function ($user, $gameId) {
     $game = Game::where("id", $gameId)->where(function (Builder $query) {
         $user = Auth::user()->name;

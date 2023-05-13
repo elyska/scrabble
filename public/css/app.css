@@ -20,7 +20,7 @@
   --bs-yellow: #bfc935;
   --bs-green: #198754;
   --bs-teal: #20c997;
-  --bs-cyan: #0dcaf0;
+  --bs-cyan: #94ffff;
   --bs-black: #000;
   --bs-white: #fff;
   --bs-gray: #6c757d;
@@ -37,7 +37,7 @@
   --bs-primary: #0d6efd;
   --bs-secondary: #6c757d;
   --bs-success: #198754;
-  --bs-info: #0dcaf0;
+  --bs-info: #94ffff;
   --bs-warning: #bfc935;
   --bs-danger: #f33e3d;
   --bs-light: #f8f9fa;
@@ -45,7 +45,7 @@
   --bs-primary-rgb: 13, 110, 253;
   --bs-secondary-rgb: 108, 117, 125;
   --bs-success-rgb: 25, 135, 84;
-  --bs-info-rgb: 13, 202, 240;
+  --bs-info-rgb: 148, 255, 255;
   --bs-warning-rgb: 191, 201, 53;
   --bs-danger-rgb: 243, 62, 61;
   --bs-light-rgb: 248, 249, 250;
@@ -1857,13 +1857,13 @@ progress {
 
 .table-info {
   --bs-table-color: #000;
-  --bs-table-bg: #cff4fc;
-  --bs-table-border-color: #badce3;
-  --bs-table-striped-bg: #c5e8ef;
+  --bs-table-bg: #eaffff;
+  --bs-table-border-color: #d3e6e6;
+  --bs-table-striped-bg: #def2f2;
   --bs-table-striped-color: #000;
-  --bs-table-active-bg: #badce3;
+  --bs-table-active-bg: #d3e6e6;
   --bs-table-active-color: #000;
-  --bs-table-hover-bg: #bfe2e9;
+  --bs-table-hover-bg: #d8ecec;
   --bs-table-hover-color: #000;
   color: var(--bs-table-color);
   border-color: var(--bs-table-border-color);
@@ -2896,19 +2896,19 @@ textarea.form-control-lg {
 
 .btn-info {
   --bs-btn-color: #000;
-  --bs-btn-bg: #0dcaf0;
-  --bs-btn-border-color: #0dcaf0;
+  --bs-btn-bg: #94ffff;
+  --bs-btn-border-color: #94ffff;
   --bs-btn-hover-color: #000;
-  --bs-btn-hover-bg: #31d2f2;
-  --bs-btn-hover-border-color: #25cff2;
-  --bs-btn-focus-shadow-rgb: 11, 172, 204;
+  --bs-btn-hover-bg: #a4ffff;
+  --bs-btn-hover-border-color: #9fffff;
+  --bs-btn-focus-shadow-rgb: 126, 217, 217;
   --bs-btn-active-color: #000;
-  --bs-btn-active-bg: #3dd5f3;
-  --bs-btn-active-border-color: #25cff2;
+  --bs-btn-active-bg: #a9ffff;
+  --bs-btn-active-border-color: #9fffff;
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #000;
-  --bs-btn-disabled-bg: #0dcaf0;
-  --bs-btn-disabled-border-color: #0dcaf0;
+  --bs-btn-disabled-bg: #94ffff;
+  --bs-btn-disabled-border-color: #94ffff;
 }
 
 .btn-warning {
@@ -3031,19 +3031,19 @@ textarea.form-control-lg {
 }
 
 .btn-outline-info {
-  --bs-btn-color: #0dcaf0;
-  --bs-btn-border-color: #0dcaf0;
+  --bs-btn-color: #94ffff;
+  --bs-btn-border-color: #94ffff;
   --bs-btn-hover-color: #000;
-  --bs-btn-hover-bg: #0dcaf0;
-  --bs-btn-hover-border-color: #0dcaf0;
-  --bs-btn-focus-shadow-rgb: 13, 202, 240;
+  --bs-btn-hover-bg: #94ffff;
+  --bs-btn-hover-border-color: #94ffff;
+  --bs-btn-focus-shadow-rgb: 148, 255, 255;
   --bs-btn-active-color: #000;
-  --bs-btn-active-bg: #0dcaf0;
-  --bs-btn-active-border-color: #0dcaf0;
+  --bs-btn-active-bg: #94ffff;
+  --bs-btn-active-border-color: #94ffff;
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  --bs-btn-disabled-color: #0dcaf0;
+  --bs-btn-disabled-color: #94ffff;
   --bs-btn-disabled-bg: transparent;
-  --bs-btn-disabled-border-color: #0dcaf0;
+  --bs-btn-disabled-border-color: #94ffff;
   --bs-gradient: none;
 }
 
@@ -4683,12 +4683,12 @@ textarea.form-control-lg {
 }
 
 .alert-info {
-  --bs-alert-color: #055160;
-  --bs-alert-bg: #cff4fc;
-  --bs-alert-border-color: #b6effb;
+  --bs-alert-color: #3b6666;
+  --bs-alert-bg: #eaffff;
+  --bs-alert-border-color: #dfffff;
 }
 .alert-info .alert-link {
-  color: #04414d;
+  color: #2f5252;
 }
 
 .alert-warning {
@@ -5062,17 +5062,17 @@ textarea.form-control-lg {
 }
 
 .list-group-item-info {
-  color: #055160;
-  background-color: #cff4fc;
+  color: #3b6666;
+  background-color: #eaffff;
 }
 .list-group-item-info.list-group-item-action:hover, .list-group-item-info.list-group-item-action:focus {
-  color: #055160;
-  background-color: #badce3;
+  color: #3b6666;
+  background-color: #d3e6e6;
 }
 .list-group-item-info.list-group-item-action.active {
   color: #fff;
-  background-color: #055160;
-  border-color: #055160;
+  background-color: #3b6666;
+  border-color: #3b6666;
 }
 
 .list-group-item-warning {
@@ -6620,7 +6620,7 @@ textarea.form-control-lg {
 
 .text-bg-info {
   color: #000 !important;
-  background-color: RGBA(13, 202, 240, var(--bs-bg-opacity, 1)) !important;
+  background-color: RGBA(148, 255, 255, var(--bs-bg-opacity, 1)) !important;
 }
 
 .text-bg-warning {
@@ -6665,10 +6665,10 @@ textarea.form-control-lg {
 }
 
 .link-info {
-  color: #0dcaf0 !important;
+  color: #94ffff !important;
 }
 .link-info:hover, .link-info:focus {
-  color: #3dd5f3 !important;
+  color: #a9ffff !important;
 }
 
 .link-warning {
@@ -10832,7 +10832,7 @@ label {
 
 button[type=submit] {
   background: #029a9b;
-  color: white;
+  color: white !important;
 }
 button[type=submit]:hover {
   background: #047171;
@@ -10861,6 +10861,86 @@ button[type=submit]:hover {
   background: rgba(255, 255, 255, 0.6392156863);
 }
 
+.player-box-1 {
+  border: 2px solid #f33e3d;
+  border-radius: 5px;
+  box-shadow: 0px 0px 13px 0px #f33e3d, inset 0px 0px 13px 0px #f33e3d;
+  height: 180px;
+  max-width: 180px;
+}
+.player-box-1 .player-name {
+  color: #f33e3d;
+  font-size: 30px;
+  text-shadow: #f33e3d 3px 3px 8px;
+}
+
+.player-box-2 {
+  border: 2px solid #94ffff;
+  border-radius: 5px;
+  box-shadow: 0px 0px 13px 0px #94ffff, inset 0px 0px 13px 0px #94ffff;
+  height: 180px;
+  max-width: 180px;
+}
+.player-box-2 .player-name {
+  color: #94ffff;
+  font-size: 30px;
+  text-shadow: #94ffff 3px 3px 8px;
+}
+
+.vs {
+  font-family: Scramble;
+  color: white;
+  font-size: 80px;
+  text-align: center;
+}
+
+.bag-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.bag-container img:hover {
+  /* Start the shake animation and make the animation last for 0.5 seconds */
+  animation: shake 1s;
+  /* When the animation is finished, start again */
+  animation-iteration-count: infinite;
+}
+
+@keyframes shake {
+  0% {
+    transform: translate(1px, 1px) rotate(0deg);
+  }
+  10% {
+    transform: translate(-1px, -2px) rotate(-1deg);
+  }
+  20% {
+    transform: translate(-3px, 0px) rotate(1deg);
+  }
+  30% {
+    transform: translate(3px, 2px) rotate(0deg);
+  }
+  40% {
+    transform: translate(1px, -1px) rotate(1deg);
+  }
+  50% {
+    transform: translate(-1px, 2px) rotate(-1deg);
+  }
+  60% {
+    transform: translate(-3px, 1px) rotate(0deg);
+  }
+  70% {
+    transform: translate(3px, 1px) rotate(-1deg);
+  }
+  80% {
+    transform: translate(-1px, -1px) rotate(1deg);
+  }
+  90% {
+    transform: translate(1px, 2px) rotate(0deg);
+  }
+  100% {
+    transform: translate(1px, -2px) rotate(-1deg);
+  }
+}
 #board {
   height: -moz-fit-content;
   height: fit-content;

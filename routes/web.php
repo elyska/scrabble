@@ -33,7 +33,10 @@ Route::middleware([EnsureUserIsPlayer::class])->group(function () {
     Route::post('/rack-update/{gameId}', [App\Http\Controllers\GameController::class, 'updateRack'])->name('rack-update');
     Route::post('/board-update/{gameId}', [App\Http\Controllers\GameController::class, 'updateBoard'])->name('board-update');
     Route::post('/refill/{gameId}', [App\Http\Controllers\GameController::class, 'refillRack'])->name('refill');
+    Route::post('/draw/{gameId}', [App\Http\Controllers\GameController::class, 'draw'])->name('draw');
 
+    Route::get('/draw/{gameId}', [App\Http\Controllers\GameController::class, 'preGameDraw'])->name('pre-game-draw');
+    Route::get('/load-drawn-letters/{gameId}', [App\Http\Controllers\GameController::class, 'loadDrawnLetters'])->name('load-drawn-letters');
     Route::get('/game/{gameId}', [App\Http\Controllers\GameController::class, 'getGame'])->name('game');
     Route::get('/rack/{gameId}', [App\Http\Controllers\GameController::class, 'getRack'])->name('rack');
     Route::get('/board/{gameId}', [App\Http\Controllers\GameController::class, 'getBoard'])->name('board');

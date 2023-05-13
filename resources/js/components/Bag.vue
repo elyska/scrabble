@@ -1,12 +1,12 @@
 <template>
-    <img src="/images/scrabble-bag.png" class="bag" @click="refill" />
+    <img src="/images/scrabble-bag.png" class="bag" @click="bagClick" />
 </template>
 
 <script>
 export default {
     methods: {
-        refill() {
-            this.$emit('refill')
+        bagClick() {
+            this.$emit('bagClick')
         }
     }
 }

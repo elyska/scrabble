@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         User::truncate();
         User::factory()->create();
         User::factory()->create([
-            "name" => "Protihráč",
+            "name" => "Silva",
             "email" => "asd2@asd.com",
         ]);
 

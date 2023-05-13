@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\BoardDelete;
 use App\Events\BoardUpdate;
+use App\Events\Draw;
 use App\Helpers\RackHelper;
 use App\Models\Alphabet;
 use App\Models\Bag;
@@ -57,10 +58,98 @@ class GameController extends Controller
         RackHelper::createNew($user, $gameId);
         RackHelper::createNew($opponent, $gameId);
 
-        return redirect()->route('game', ['gameId' => $gameId]);;
+        // save game id to cookies
+        setcookie("gameId", $gameId, time() + (86400 * 30)); // 86400 = 1 day
+
+        return redirect()->route('pre-game-draw', ['gameId' => $gameId]);
+    }
+
+    public function preGameDraw($gameId) {
+        // save game id to cookies
+        setcookie("gameId", $gameId, time() + (86400 * 30)); // 86400 = 1 day
+
+        $game = Game::where("id", $gameId)->first();
+
+        // redirect to the game if turn is already set
+        if ($game->turn != null) return redirect()->route('game', ['gameId' => $gameId]);
+
+        // get opponent name
+        $user = Auth::user()->name;
+        if ($game->player1 ===  $user) $opponent = $game->player2;
+        else $opponent = $game->player1;
+
+        return view("pre-game", [
+            "opponent" => $opponent,
+        ]);
+    }
+    public function draw($gameId) {
+        $tile = Bag::where("gameId", $gameId)->inRandomOrder()->first();
+
+        // determine if user is player1 or player2 and
+        // save drawn letter or return letter drawn previously
+        $game = Game::where("id", $gameId)->first();
+        $user = Auth::user()->name;
+        if ($game->player1 ===  $user) { // user is player1
+            if (!$game->player1Draw) {
+                $game->player1Draw = $tile->id; // user has not drawn a letter
+                broadcast(new Draw($gameId))->toOthers();
+            }
+            else {
+                $letter = $game->player1Draw;
+                $tile = Bag::where("id", $letter)->first(); // get previously drawn letter
+            }
+        }
+        else if ($game->player2 ===  $user) { // user is player2
+            if (!$game->player2Draw) {
+                $game->player2Draw = $tile->id; // user has not drawn a letter
+                broadcast(new Draw($gameId))->toOthers();
+            }
+            else {
+                $letter = $game->player2Draw;
+                $tile = Bag::where("id", $letter)->first(); // get previously drawn letter
+            }
+        }
+        $game->save();
+
+        return $tile;
+    }
+
+    public function loadDrawnLetters($gameId) {
+        // get drawn letters
+        $game = Game::where("id", $gameId)->first();
+        $player1Draw = Bag::where("id", $game->player1Draw)->first();
+        $player2Draw = Bag::where("id", $game->player2Draw)->first();
+
+        // if drawn letters have same value -> delete them
+        if ($player1Draw && $player2Draw && $player1Draw->value === $player2Draw->value) {
+            $game->player1Draw = null;
+            $game->player2Draw = null;
+            $game->save();
+            return;
+        }
+
+        // determine if user is player1 or player2
+        $user = Auth::user()->name;
+        if ($game->player1 ===  $user) { // user is player1
+            return [
+                "userTile" => $player1Draw,
+                "opponentTile" => $player2Draw
+            ];
+        }
+        else if ($game->player2 ===  $user) { // user is player2
+            return [
+                "userTile" => $player2Draw,
+                "opponentTile" => $player1Draw
+            ];
+        }
     }
 
     public function getGame($gameId) {
+        // redirect to the draw if turn is not set
+        $game = Game::where("id", $gameId)->first();
+        if ($game->turn == null) return redirect()->route('draw', ['gameId' => $gameId]);
+
+        // save game id to cookies
         setcookie("gameId", $gameId, time() + (86400 * 30)); // 86400 = 1 day
         return view('game');
     }
@@ -78,7 +167,10 @@ class GameController extends Controller
         $letter = $request->input("letter");
         $value = $request->input("value");
 
-        Rack::where("gameId", $gameId)->where("user", $user)->where("x", $x)->where("y", 15)->update(['letter' => $letter, "value" => $value]);
+        Rack::where("gameId", $gameId)->where("user", $user)->where("x", $x)->where("y", 15)->update([
+            'letter' => $letter,
+            "value" => $value
+        ]);
     }
 
     public function updateBoard(Request $request, $gameId) {

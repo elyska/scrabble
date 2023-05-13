@@ -17,6 +17,9 @@ class CreateGamesTable extends Migration
             $table->id();
             $table->string("player1");
             $table->string("player2");
+            $table->string("turn")->nullable();
+            $table->string("player1Draw")->nullable();
+            $table->string("player2Draw")->nullable();
             $table->timestamps();
         });
     }

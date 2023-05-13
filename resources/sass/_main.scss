@@ -56,7 +56,7 @@ label {
 
 button[type="submit"] {
     background: $rack-green;
-    color: white;
+    color: white !important;
 
     &:hover {
         background: $rack-dark-green;

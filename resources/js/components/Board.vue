@@ -15,7 +15,7 @@
         </div>
         <div class="rack-container col-4">
             <rack :tiles="rack" @rackTileMoved="handleTileMoved"></rack>
-            <bag @refill="handleRefill"></bag>
+            <bag @bagClick="handleRefill"></bag>
         </div>
     </div>
 </template>
