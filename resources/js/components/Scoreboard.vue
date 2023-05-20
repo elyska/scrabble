@@ -6,8 +6,8 @@
             <th>Silva</th>
         </tr>
         <tr>
-            <td></td>
-            <td></td>
+            <td><input class="form-control scoreinput" type="number" /></td>
+            <td><input class="form-control scoreinput" type="number" /></td>
         </tr>
         <tr>
             <td></td>

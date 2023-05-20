@@ -9,7 +9,7 @@
                 @csrf
 
                 <p class="mb-3">
-                    <input placeholder="{{ __('Email Address') }}" id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                    <input placeholder="{{ __('Email Address') }}" id="email" type="email" class="form-control @error('email') is-invalid @enderror generic-input" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
                     @error('email')
                         <div class="alert alert-danger" role="alert">
@@ -19,7 +19,7 @@
                 </p>
 
                 <p class="mb-3">
-                    <input placeholder="{{ __('Password') }}" id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                    <input placeholder="{{ __('Password') }}" id="password" type="password" class="form-control @error('password') is-invalid @enderror generic-input" name="password" required autocomplete="current-password">
 
                     @error('password')
                         <div class="alert alert-danger" role="alert">
@@ -39,7 +39,7 @@
                 </p>
 
                 <p class="mb-3">
-                    <button type="submit" class="btn w-100">
+                    <button type="submit" class="btn w-100 generic-input">
                         {{ __('Login') }}
                     </button>
                 </p>

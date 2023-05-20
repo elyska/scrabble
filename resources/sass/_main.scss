@@ -37,7 +37,7 @@ h1 {
     color: $red;
 }
 
-input:not(input[type="checkbox"]), select, button {
+.generic-input {
     border-radius: 30px !important;
     padding: 10px 20px !important;
     font-size: 18px !important;

@@ -26,7 +26,14 @@
     background: $blue-tripple;
 }
 .double-word, .star {
-    background: $orange;
+    background-color: $orange;
+}
+
+.star {
+    background-image: url('/images/scrabble-star.png');
+    background-size: $cell-size - 8px $cell-size - 8px;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 .double-letter {
     background: $blue-double;

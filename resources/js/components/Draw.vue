@@ -38,7 +38,7 @@
                 </h5>
             </template>
             <template v-slot:footer>
-                <a href="" class="btn btn-primary">{{ play }}</a>
+                <a :href="'/game/' + gameId" class="btn btn-primary">{{ play }}</a>
             </template>
         </modal>
         <!-- Modal - same values-->

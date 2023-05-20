@@ -10812,7 +10812,7 @@ h1, .h1 {
   color: #f33e3d;
 }
 
-input:not(input[type=checkbox]), select, button {
+.generic-input {
   border-radius: 30px !important;
   padding: 10px 20px !important;
   font-size: 18px !important;
@@ -10975,7 +10975,14 @@ button[type=submit]:hover {
 }
 
 .double-word, .star {
-  background: #ffb268;
+  background-color: #ffb268;
+}
+
+.star {
+  background-image: url("/images/scrabble-star.png");
+  background-size: 29px 29px;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .double-letter {
@@ -11081,4 +11088,10 @@ button[type=submit]:hover {
 }
 .scoreboard tr:last-child td {
   height: 100%;
+}
+
+.scoreinput {
+  width: 70px;
+  border: 1px solid #235748 important;
+  border-radius: 5px !important;
 }

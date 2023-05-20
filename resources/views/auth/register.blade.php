@@ -10,7 +10,7 @@
                 @csrf
 
                 <p class="mb-3">
-                    <input placeholder="{{ __('Name') }}" id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                    <input placeholder="{{ __('Name') }}" id="name" type="text" class="form-control @error('name') is-invalid @enderror generic-input" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
                     @error('name')
                         <div class="alert alert-danger" role="alert">
@@ -20,7 +20,7 @@
                 </p>
 
                 <p class="mb-3">
-                    <input placeholder="{{ __('Email Address') }}" id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                    <input placeholder="{{ __('Email Address') }}" id="email" type="email" class="form-control @error('email') is-invalid @enderror generic-input" name="email" value="{{ old('email') }}" required autocomplete="email">
 
                     @error('email')
                         <div class="alert alert-danger" role="alert">
@@ -30,7 +30,7 @@
                 </p>
 
                 <p class="mb-3">
-                    <input placeholder="{{ __('Password') }}" id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                    <input placeholder="{{ __('Password') }}" id="password" type="password" class="form-control @error('password') is-invalid @enderror generic-input" name="password" required autocomplete="new-password">
 
                     @error('password')
                         <div class="alert alert-danger" role="alert">
@@ -40,11 +40,11 @@
                 </p>
 
                 <p class="mb-3">
-                    <input placeholder="{{ __('Confirm Password') }}" id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                    <input placeholder="{{ __('Confirm Password') }}" id="password-confirm" type="password" class="form-control generic-input" name="password_confirmation" required autocomplete="new-password">
                 </p>
 
                 <p class="mb-3">
-                    <button type="submit" class="btn w-100">
+                    <button type="submit" class="btn w-100 generic-input">
                         {{ __('Register') }}
                     </button>
                 </p>

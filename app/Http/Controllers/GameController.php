@@ -90,8 +90,8 @@ class GameController extends Controller
         $game = Game::where("id", $gameId)->first();
         $user = Auth::user()->name;
         if ($game->player1 ===  $user) { // user is player1
-            if (!$game->player1Draw) {
-                $game->player1Draw = $tile->id; // user has not drawn a letter
+            if (!$game->player1Draw) {// user has not drawn a letter
+                $game->player1Draw = $tile->id;
                 broadcast(new Draw($gameId))->toOthers();
             }
             else {
@@ -100,13 +100,24 @@ class GameController extends Controller
             }
         }
         else if ($game->player2 ===  $user) { // user is player2
-            if (!$game->player2Draw) {
-                $game->player2Draw = $tile->id; // user has not drawn a letter
+            if (!$game->player2Draw) {// user has not drawn a letter
+                $game->player2Draw = $tile->id;
                 broadcast(new Draw($gameId))->toOthers();
             }
             else {
                 $letter = $game->player2Draw;
                 $tile = Bag::where("id", $letter)->first(); // get previously drawn letter
+            }
+        }
+        // set turn
+        if ($game->player1Draw != null && $game->player2Draw != null && $game->turn == null) {
+            $player1Draw = Bag::where("id", $game->player1Draw)->first();
+            $player2Draw = Bag::where("id", $game->player2Draw)->first();
+            if ($player1Draw->value > $player2Draw->value) {
+                $game->turn = $game->player1;
+            }
+            else if ($player1Draw->value < $player2Draw->value) {
+                $game->turn = $game->player2;
             }
         }
         $game->save();
@@ -120,7 +131,7 @@ class GameController extends Controller
         $player1Draw = Bag::where("id", $game->player1Draw)->first();
         $player2Draw = Bag::where("id", $game->player2Draw)->first();
 
-        // if drawn letters have same value -> delete them
+        // if drawn letters have same value -> delete them, players need to draw letters again
         if ($player1Draw && $player2Draw && $player1Draw->value === $player2Draw->value) {
             $game->player1Draw = null;
             $game->player2Draw = null;
@@ -145,8 +156,9 @@ class GameController extends Controller
     }
 
     public function getGame($gameId) {
-        // redirect to the draw if turn is not set
         $game = Game::where("id", $gameId)->first();
+
+        // redirect if turn not set
         if ($game->turn == null) return redirect()->route('draw', ['gameId' => $gameId]);
 
         // save game id to cookies

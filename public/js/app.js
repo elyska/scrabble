@@ -36449,7 +36449,10 @@ var render = function () {
                     return [
                       _c(
                         "a",
-                        { staticClass: "btn btn-primary", attrs: { href: "" } },
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { href: "/game/" + _vm.gameId },
+                        },
                         [_vm._v(_vm._s(_vm.play))]
                       ),
                     ]
@@ -36459,7 +36462,7 @@ var render = function () {
               ],
               null,
               false,
-              1879579156
+              338968466
             ),
           })
         : _vm._e(),
@@ -36730,7 +36733,21 @@ var staticRenderFns = [
           _c("th", [_vm._v("Silva")]),
         ]),
         _vm._v(" "),
-        _c("tr", [_c("td"), _vm._v(" "), _c("td")]),
+        _c("tr", [
+          _c("td", [
+            _c("input", {
+              staticClass: "form-control scoreinput",
+              attrs: { type: "number" },
+            }),
+          ]),
+          _vm._v(" "),
+          _c("td", [
+            _c("input", {
+              staticClass: "form-control scoreinput",
+              attrs: { type: "number" },
+            }),
+          ]),
+        ]),
         _vm._v(" "),
         _c("tr", [_c("td"), _vm._v(" "), _c("td")]),
       ]),
