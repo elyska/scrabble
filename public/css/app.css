@@ -11087,12 +11087,17 @@ button[type=submit]:hover {
 .scoreboard td:not(:last-child), .scoreboard th:not(:last-child) {
   border-right: 1px solid grey;
 }
-.scoreboard tr:last-child td {
+.scoreboard tr:nth-child(2) td {
   height: 100%;
 }
 
 .score-list p {
   margin: 0;
+}
+
+.score-list-container {
+  height: 518px;
+  overflow-y: auto;
 }
 
 .score-input {

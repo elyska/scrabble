@@ -7,31 +7,33 @@
         </tr>
         <tr class="score-list">
             <td>
-                <p v-for="record in playerScores" :key="record.id">{{ record.score }}</p>
+                <div class="score-list-container">
+                    <p v-for="record in playerScores" :key="record.id">{{ record.score }}</p>
+                </div>
             </td>
             <td>
+                <div class="score-list-container">
                 <p v-for="record in opponentScores" :key="record.id">{{ record.score }}</p>
+                </div>
             </td>
         </tr>
         <tr>
             <td>
-<!--                <form method="post" :action="'/score/' + gameId">-->
-<!--                    -->
-<!--                    <input class="form-control score-input" type="number" />-->
-<!--                </form>-->
                 <input class="form-control score-input" v-model="scoreInput" v-on:keyup.enter="writeScore" type="number"/>
             </td>
             <td><input class="form-control score-input input-placeholder" type="number" /></td>
         </tr>
-        <tr>
-            <td></td>
-            <td></td>
-        </tr>
+<!--        <tr>-->
+<!--            <td></td>-->
+<!--            <td></td>-->
+<!--        </tr>-->
     </table>
     </div>
 </template>
 
 <script>
+import {forEach} from "lodash";
+
 export default {
     mixins: [
         require('../mixins/CreateBoard.vue').default
@@ -46,6 +48,15 @@ export default {
         }
     },
     methods: {
+        scrollToBottom() {
+            // always scroll down in the score table
+            let scorelists = this.$el.querySelectorAll(".score-list-container");
+            for(let list of scorelists) {
+                setTimeout(() => {
+                    list.scrollTop = list.scrollHeight;
+                }, 500);
+            }
+        },
         loadScoreboard() {
             console.log("load scoreboard")
             console.log(this.gameId)
@@ -57,6 +68,7 @@ export default {
                     this.opponentName = response.data.opponentName
                     this.playerScores = response.data.playerScores
                     this.opponentScores = response.data.opponentScores
+                    this.scrollToBottom()
                 })
                 .catch(error => console.log(error))
         },
@@ -70,6 +82,7 @@ export default {
                     this.scoreInput = null
                 })
                 .catch(error => console.log(error))
+            this.scrollToBottom()
         },
     },
     mounted() {

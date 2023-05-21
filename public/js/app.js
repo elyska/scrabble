@@ -5391,7 +5391,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     handleRefill: function handleRefill() {
       var _this = this;
       axios.post('/refill/' + this.gameId).then(function (response) {
-        if (response.data.message) console.log(response.data.message);
+        if (response.data.message) alert(response.data.message);
         _this.loadRack();
       })["catch"](function (error) {
         return console.log(error);
@@ -5810,6 +5810,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 //
 //
 //
@@ -5844,6 +5849,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mixins: [(__webpack_require__(/*! ../mixins/CreateBoard.vue */ "./resources/js/mixins/CreateBoard.vue")["default"])],
   data: function data() {
@@ -5856,6 +5862,27 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    scrollToBottom: function scrollToBottom() {
+      // always scroll down in the score table
+      var scorelists = this.$el.querySelectorAll(".score-list-container");
+      var _iterator = _createForOfIteratorHelper(scorelists),
+        _step;
+      try {
+        var _loop = function _loop() {
+          var list = _step.value;
+          setTimeout(function () {
+            list.scrollTop = list.scrollHeight;
+          }, 500);
+        };
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          _loop();
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+    },
     loadScoreboard: function loadScoreboard() {
       var _this = this;
       console.log("load scoreboard");
@@ -5865,6 +5892,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.opponentName = response.data.opponentName;
         _this.playerScores = response.data.playerScores;
         _this.opponentScores = response.data.opponentScores;
+        _this.scrollToBottom();
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -5879,6 +5907,7 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         return console.log(error);
       });
+      this.scrollToBottom();
     }
   },
   mounted: function mounted() {
@@ -36783,21 +36812,27 @@ var render = function () {
       ]),
       _vm._v(" "),
       _c("tr", { staticClass: "score-list" }, [
-        _c(
-          "td",
-          _vm._l(_vm.playerScores, function (record) {
-            return _c("p", { key: record.id }, [_vm._v(_vm._s(record.score))])
-          }),
-          0
-        ),
+        _c("td", [
+          _c(
+            "div",
+            { staticClass: "score-list-container" },
+            _vm._l(_vm.playerScores, function (record) {
+              return _c("p", { key: record.id }, [_vm._v(_vm._s(record.score))])
+            }),
+            0
+          ),
+        ]),
         _vm._v(" "),
-        _c(
-          "td",
-          _vm._l(_vm.opponentScores, function (record) {
-            return _c("p", { key: record.id }, [_vm._v(_vm._s(record.score))])
-          }),
-          0
-        ),
+        _c("td", [
+          _c(
+            "div",
+            { staticClass: "score-list-container" },
+            _vm._l(_vm.opponentScores, function (record) {
+              return _c("p", { key: record.id }, [_vm._v(_vm._s(record.score))])
+            }),
+            0
+          ),
+        ]),
       ]),
       _vm._v(" "),
       _c("tr", [
@@ -36836,8 +36871,6 @@ var render = function () {
         _vm._v(" "),
         _vm._m(0),
       ]),
-      _vm._v(" "),
-      _vm._m(1),
     ]),
   ])
 }
@@ -36852,12 +36885,6 @@ var staticRenderFns = [
         attrs: { type: "number" },
       }),
     ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [_c("td"), _vm._v(" "), _c("td")])
   },
 ]
 render._withStripped = true
@@ -49017,6 +49044,18 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 				}
 /******/ 			}
 /******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
 /******/ 		};
 /******/ 	})();
 /******/ 	

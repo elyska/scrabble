@@ -217,6 +217,13 @@ class GameController extends Controller
 
     public function refillRack($gameId) {
         $user = Auth::user()->name;
+        $game = Game::where("id", $gameId)->first();
+
+        if ($game->turn != $user) {
+            return response()->json([
+                'message' => 'Not your turn'
+            ]);
+        }
 
         $emptySpaces = Rack::where("gameId", $gameId)->where("user", $user)->where("letter", null)->get();
 
@@ -225,13 +232,20 @@ class GameController extends Controller
             $tile = Bag::where("gameId", $gameId)->inRandomOrder()->first();
             // if not empty, delete from bag
             if (!$tile) return response()->json([
-                'message' => 'Žádná další písmena'
-            ]);;
+                'message' => 'No more letters'
+            ]);
             $tile->delete($tile);
             // add to rack
             $emptySpaces[$i]->letter = $tile->letter;
             $emptySpaces[$i]->value = $tile->value;
             $emptySpaces[$i]->save();
+        }
+        // set turn after refill
+        if (count($emptySpaces) != 0) {
+
+            if ($game->player1 == $user) $game->turn = $game->player2;
+            else $game->turn = $game->player1;
+            $game->save();
         }
     }
 

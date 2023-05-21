@@ -51,7 +51,7 @@ export default {
             axios
                 .post('/refill/' + this.gameId)
                 .then(response => {
-                    if (response.data.message) console.log(response.data.message)
+                    if (response.data.message) alert(response.data.message)
                     this.loadRack()
                 })
                 .catch(error => console.log(error))

@@ -29,7 +29,7 @@
         }
     }
 
-    tr:last-child td {
+    tr:nth-child(2) td {
         height: 100%;
     }
 }
@@ -38,6 +38,11 @@
     p {
         margin: 0;
     }
+}
+
+.score-list-container {
+    height: $cell-size * 14px;
+    overflow-y: auto;
 }
 
 .score-input {
