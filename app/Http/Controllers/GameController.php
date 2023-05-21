@@ -11,6 +11,7 @@ use App\Models\Bag;
 use App\Models\Board;
 use App\Models\Game;
 use App\Models\Rack;
+use App\Models\Scoreboard;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -231,6 +232,40 @@ class GameController extends Controller
             $emptySpaces[$i]->value = $tile->value;
             $emptySpaces[$i]->save();
         }
+    }
+
+    public function getScoreboard($gameId) {
+        $user = Auth::user()->name;
+        $game = Game::where("id", $gameId)->first();
+        // get opponent name
+        if ($game->player1 == $user) $opponent = $game->player2;
+        else $opponent = $game->player1;
+
+        $playerScores = Scoreboard::where("gameId", $gameId)->where("player", $user)->get();
+        $opponentScores = Scoreboard::where("gameId", $gameId)->where("player", $opponent)->get();
+
+        return [
+            "playerName" => $user,
+            "opponentName" => $opponent,
+            "playerScores" => $playerScores,
+            "opponentScores" => $opponentScores
+        ];
+    }
+    public function writeScore($gameId, Request $request) {
+        $request->validate([
+            'score' => 'required|integer',
+        ]);
+
+        $score = $request->get("score");
+
+        $user = Auth::user()->name;
+
+        $record = Scoreboard::create([
+           "gameId" => $gameId,
+           "player" => $user,
+           "score" => $score
+        ]);
+        return $record;
     }
 
 }

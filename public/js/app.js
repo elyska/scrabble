@@ -5829,10 +5829,62 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  mixins: [(__webpack_require__(/*! ../mixins/CreateBoard.vue */ "./resources/js/mixins/CreateBoard.vue")["default"])],
   data: function data() {
-    return {};
+    return {
+      scoreInput: null,
+      playerName: null,
+      opponentName: null,
+      playerScores: [],
+      opponentScores: []
+    };
+  },
+  methods: {
+    loadScoreboard: function loadScoreboard() {
+      var _this = this;
+      console.log("load scoreboard");
+      console.log(this.gameId);
+      axios.get('/scoreboard/' + this.gameId).then(function (response) {
+        console.log("response.data");
+        console.log(response.data);
+        _this.playerName = response.data.playerName;
+        _this.opponentName = response.data.opponentName;
+        _this.playerScores = response.data.playerScores;
+        _this.opponentScores = response.data.opponentScores;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    writeScore: function writeScore() {
+      var _this2 = this;
+      axios.post('/score/' + this.gameId, {
+        score: this.scoreInput
+      }).then(function (response) {
+        _this2.playerScores.push(response.data);
+        _this2.scoreInput = null;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.loadScoreboard();
   }
 });
 
@@ -36718,40 +36770,90 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "container scoreboard-container" }, [
+    _c("table", { staticClass: "scoreboard" }, [
+      _c("tr", [
+        _c("th", [_vm._v(_vm._s(_vm.playerName))]),
+        _vm._v(" "),
+        _c("th", [_vm._v(_vm._s(_vm.opponentName))]),
+      ]),
+      _vm._v(" "),
+      _c("tr", { staticClass: "score-list" }, [
+        _c(
+          "td",
+          _vm._l(_vm.playerScores, function (record) {
+            return _c("p", { key: record.id }, [_vm._v(_vm._s(record.score))])
+          }),
+          0
+        ),
+        _vm._v(" "),
+        _c(
+          "td",
+          _vm._l(_vm.opponentScores, function (record) {
+            return _c("p", { key: record.id }, [_vm._v(_vm._s(record.score))])
+          }),
+          0
+        ),
+      ]),
+      _vm._v(" "),
+      _c("tr", [
+        _c("td", [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.scoreInput,
+                expression: "scoreInput",
+              },
+            ],
+            staticClass: "form-control score-input",
+            attrs: { type: "number" },
+            domProps: { value: _vm.scoreInput },
+            on: {
+              keyup: function ($event) {
+                if (
+                  !$event.type.indexOf("key") &&
+                  _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                ) {
+                  return null
+                }
+                return _vm.writeScore.apply(null, arguments)
+              },
+              input: function ($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.scoreInput = $event.target.value
+              },
+            },
+          }),
+        ]),
+        _vm._v(" "),
+        _vm._m(0),
+      ]),
+      _vm._v(" "),
+      _vm._m(1),
+    ]),
+  ])
 }
 var staticRenderFns = [
   function () {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container scoreboard-container" }, [
-      _c("table", { staticClass: "scoreboard" }, [
-        _c("tr", [
-          _c("th", [_vm._v("Elza")]),
-          _vm._v(" "),
-          _c("th", [_vm._v("Silva")]),
-        ]),
-        _vm._v(" "),
-        _c("tr", [
-          _c("td", [
-            _c("input", {
-              staticClass: "form-control scoreinput",
-              attrs: { type: "number" },
-            }),
-          ]),
-          _vm._v(" "),
-          _c("td", [
-            _c("input", {
-              staticClass: "form-control scoreinput",
-              attrs: { type: "number" },
-            }),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("tr", [_c("td"), _vm._v(" "), _c("td")]),
-      ]),
+    return _c("td", [
+      _c("input", {
+        staticClass: "form-control score-input input-placeholder",
+        attrs: { type: "number" },
+      }),
     ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [_c("td"), _vm._v(" "), _c("td")])
   },
 ]
 render._withStripped = true
