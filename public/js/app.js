@@ -5861,8 +5861,6 @@ __webpack_require__.r(__webpack_exports__);
       console.log("load scoreboard");
       console.log(this.gameId);
       axios.get('/scoreboard/' + this.gameId).then(function (response) {
-        console.log("response.data");
-        console.log(response.data);
         _this.playerName = response.data.playerName;
         _this.opponentName = response.data.opponentName;
         _this.playerScores = response.data.playerScores;
@@ -5884,7 +5882,13 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
+    var _this3 = this;
     this.loadScoreboard();
+    Echo["private"]("score.".concat(this.gameId)).listen('ScoreWrite', function (data) {
+      console.log("ScoreWrite");
+      console.log(data);
+      _this3.loadScoreboard();
+    });
   }
 });
 

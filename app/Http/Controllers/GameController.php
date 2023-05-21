@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\BoardDelete;
 use App\Events\BoardUpdate;
 use App\Events\Draw;
+use App\Events\ScoreWrite;
 use App\Helpers\RackHelper;
 use App\Models\Alphabet;
 use App\Models\Bag;
@@ -265,6 +266,9 @@ class GameController extends Controller
            "player" => $user,
            "score" => $score
         ]);
+
+        broadcast(new ScoreWrite(Auth::user(), $record->score, $gameId))->toOthers();
+
         return $record;
     }
 

@@ -53,8 +53,6 @@ export default {
             axios
                 .get('/scoreboard/' + this.gameId)
                 .then(response => {
-                    console.log("response.data")
-                    console.log(response.data)
                     this.playerName = response.data.playerName
                     this.opponentName = response.data.opponentName
                     this.playerScores = response.data.playerScores
@@ -76,6 +74,13 @@ export default {
     },
     mounted() {
         this.loadScoreboard();
+
+        Echo.private(`score.${this.gameId}`)
+            .listen('ScoreWrite', (data) => {
+                console.log("ScoreWrite")
+                console.log(data)
+                this.loadScoreboard();
+            });
     }
 }
 </script>
