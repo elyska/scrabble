@@ -17,6 +17,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class GameController extends Controller
 {
@@ -34,11 +35,17 @@ class GameController extends Controller
         // check if opponent exists
         $request->validate([
             'opponent' => 'required|exists:users,name|max:255',
+            'language' => 'required'
         ]);
+
+        $opponent = $request->input('opponent');
+
+        // check case sensitive uniqueness
+        $dbUser = User::where("name", $opponent)->first();
+        if ($dbUser && $dbUser->name != $opponent) throw ValidationException::withMessages(['opponent' => 'The selected opponent is invalid.']);
 
         // create game
         $user = Auth::user()->name;
-        $opponent = $request->input('opponent');
         $game = Game::create([
             'player1' => $user,
             'player2' => $opponent,

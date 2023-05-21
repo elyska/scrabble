@@ -9,20 +9,23 @@
                 <form action="{{ route('create-new-game') }}" method="post">
                     @csrf
                     <p class="mb-4">
-                        <input class="form-control" type="text" name="opponent" placeholder="{{ __('Opponent Name') }}">
-                    @error('opponent')
-                    <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
+                        <input class="form-control generic-input" type="text" name="opponent" placeholder="{{ __('Opponent Name') }}">
+                        @error('opponent')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                     </p>
 
                     <p class="mb-4">
-                        <select class="form-control"  name="language">
+                        <select class="form-control generic-input"  name="language">
                             <option value="CS" disabled selected>{{ __("Language") }}</option>
                             <option value="CS">{{ __("Czech") }}</option>
                         </select>
+                        @error('language')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                     </p>
 
-                    <button class="btn w-100" type="submit">{{ __("Create Game") }}</button>
+                    <button class="btn w-100 generic-input" type="submit">{{ __("Create Game") }}</button>
                 </form>
             </div>
         </div>
