@@ -11030,6 +11030,19 @@ button[type=submit]:hover {
   cursor: pointer;
 }
 
+.game-button {
+  background: #fdd900;
+}
+.game-button:hover {
+  background: #bfc935;
+}
+
+.game-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 20px;
+}
+
 .rack {
   width: 332px;
   height: 67px;
@@ -11062,6 +11075,8 @@ button[type=submit]:hover {
 .rack-container {
   width: -moz-max-content;
   width: max-content;
+  display: flex;
+  flex-direction: column;
 }
 
 .scoreboard-container {
@@ -11108,4 +11123,10 @@ button[type=submit]:hover {
 
 .input-placeholder {
   visibility: hidden;
+}
+
+.swap-letter-container {
+  display: flex;
+  gap: 5px;
+  margin: 20px 0;
 }

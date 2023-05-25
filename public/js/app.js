@@ -5363,6 +5363,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mixins: [(__webpack_require__(/*! ../mixins/CreateBoard.vue */ "./resources/js/mixins/CreateBoard.vue")["default"])],
@@ -5428,6 +5432,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       })["catch"](function (error) {
         return console.log(error);
       });
+    },
+    skipTurn: function skipTurn() {
+      axios.post('/skip-turn/' + this.gameId).then(function (response) {
+        if (response.data.message) alert(response.data.message);
+      })["catch"](function (error) {
+        return console.log(error);
+      });
     }
   },
   mounted: function mounted() {
@@ -5445,6 +5456,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       _this4.board[tile.y][tile.x].letter = null;
       _this4.board[tile.y][tile.x].value = null;
     });
+    console.log("this.gameId");
+    console.log(this.gameId);
   }
 });
 
@@ -5923,6 +5936,48 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/TileSwap.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/TileSwap.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  mixins: [(__webpack_require__(/*! ../mixins/CreateBoard.vue */ "./resources/js/mixins/CreateBoard.vue")["default"])],
+  data: function data() {
+    return {
+      rack: []
+    };
+  },
+  methods: {
+    loadRack: function loadRack() {
+      var _this = this;
+      axios.get('/rack/' + this.gameId).then(function (response) {
+        _this.rack = response.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.loadRack();
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/mixins/CreateBoard.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/mixins/CreateBoard.vue?vue&type=script&lang=js& ***!
@@ -6027,6 +6082,7 @@ Vue.component('bag', (__webpack_require__(/*! ./components/Bag.vue */ "./resourc
 Vue.component('scoreboard', (__webpack_require__(/*! ./components/Scoreboard.vue */ "./resources/js/components/Scoreboard.vue")["default"]));
 Vue.component('draw', (__webpack_require__(/*! ./components/Draw.vue */ "./resources/js/components/Draw.vue")["default"]));
 Vue.component('modal', (__webpack_require__(/*! ./components/Modal.vue */ "./resources/js/components/Modal.vue")["default"]));
+Vue.component('tile-swap', (__webpack_require__(/*! ./components/TileSwap.vue */ "./resources/js/components/TileSwap.vue")["default"]));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -35923,6 +35979,45 @@ component.options.__file = "resources/js/components/Scoreboard.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/TileSwap.vue":
+/*!**********************************************!*\
+  !*** ./resources/js/components/TileSwap.vue ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _TileSwap_vue_vue_type_template_id_27564e4c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TileSwap.vue?vue&type=template&id=27564e4c& */ "./resources/js/components/TileSwap.vue?vue&type=template&id=27564e4c&");
+/* harmony import */ var _TileSwap_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TileSwap.vue?vue&type=script&lang=js& */ "./resources/js/components/TileSwap.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TileSwap_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TileSwap_vue_vue_type_template_id_27564e4c___WEBPACK_IMPORTED_MODULE_0__.render,
+  _TileSwap_vue_vue_type_template_id_27564e4c___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/TileSwap.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/mixins/CreateBoard.vue":
 /*!*********************************************!*\
   !*** ./resources/js/mixins/CreateBoard.vue ***!
@@ -36106,6 +36201,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/TileSwap.vue?vue&type=script&lang=js&":
+/*!***********************************************************************!*\
+  !*** ./resources/js/components/TileSwap.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TileSwap_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./TileSwap.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/TileSwap.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TileSwap_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/mixins/CreateBoard.vue?vue&type=script&lang=js&":
 /*!**********************************************************************!*\
   !*** ./resources/js/mixins/CreateBoard.vue?vue&type=script&lang=js& ***!
@@ -36275,6 +36386,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/TileSwap.vue?vue&type=template&id=27564e4c&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/TileSwap.vue?vue&type=template&id=27564e4c& ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TileSwap_vue_vue_type_template_id_27564e4c___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TileSwap_vue_vue_type_template_id_27564e4c___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TileSwap_vue_vue_type_template_id_27564e4c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./TileSwap.vue?vue&type=template&id=27564e4c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/TileSwap.vue?vue&type=template&id=27564e4c&");
+
+
+/***/ }),
+
 /***/ "./resources/js/mixins/CreateBoard.vue?vue&type=template&id=fb82e5aa&":
 /*!****************************************************************************!*\
   !*** ./resources/js/mixins/CreateBoard.vue?vue&type=template&id=fb82e5aa& ***!
@@ -36368,6 +36496,26 @@ var render = function () {
           attrs: { tiles: _vm.rack },
           on: { rackTileMoved: _vm.handleTileMoved },
         }),
+        _vm._v(" "),
+        _c("div", { staticClass: "game-buttons" }, [
+          _c(
+            "a",
+            {
+              staticClass: "btn generic-input game-button w-30",
+              attrs: { href: "/swap-tiles/" + _vm.gameId },
+            },
+            [_vm._v("Swap tiles")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn generic-input game-button w-30",
+              on: { click: _vm.skipTurn },
+            },
+            [_vm._v("Skip my turn")]
+          ),
+        ]),
         _vm._v(" "),
         _c("bag", { on: { bagClick: _vm.handleRefill } }),
       ],
@@ -36887,6 +37035,31 @@ var staticRenderFns = [
     ])
   },
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/TileSwap.vue?vue&type=template&id=27564e4c&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/TileSwap.vue?vue&type=template&id=27564e4c& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [_c("rack", { attrs: { tiles: _vm.rack } })], 1)
+}
+var staticRenderFns = []
 render._withStripped = true
 
 

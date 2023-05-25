@@ -15,6 +15,10 @@
         </div>
         <div class="rack-container col-4">
             <rack :tiles="rack" @rackTileMoved="handleTileMoved"></rack>
+            <div class="game-buttons">
+                <a :href="'/swap-tiles/' + gameId" class="btn generic-input game-button w-30">Swap tiles</a>
+                <button @click="skipTurn" class="btn generic-input game-button w-30">Skip my turn</button>
+            </div>
             <bag @bagClick="handleRefill"></bag>
         </div>
     </div>
@@ -78,6 +82,14 @@ export default {
                     console.log("loading")
                 })
                 .catch(error => console.log(error))
+        },
+        skipTurn() {
+            axios
+                .post('/skip-turn/' + this.gameId)
+                .then(response => {
+                    if (response.data.message) alert(response.data.message)
+                })
+                .catch(error => console.log(error))
         }
     },
     mounted() {
@@ -96,6 +108,8 @@ export default {
                 this.board[tile.y][tile.x].letter = null
                 this.board[tile.y][tile.x].value = null
             });
+        console.log("this.gameId")
+        console.log(this.gameId)
     }
 }
 </script>

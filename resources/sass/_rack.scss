@@ -30,4 +30,6 @@
 
 .rack-container {
     width: max-content;
+    display: flex;
+    flex-direction: column
 }

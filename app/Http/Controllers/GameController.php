@@ -165,13 +165,14 @@ class GameController extends Controller
     }
 
     public function getGame($gameId) {
+        // save game id to cookies
+        setcookie("gameId", $gameId, time() + (86400 * 30), ""); // 86400 = 1 day
+
         $game = Game::where("id", $gameId)->first();
 
         // redirect if turn not set
         if ($game->turn == null) return redirect()->route('draw', ['gameId' => $gameId]);
 
-        // save game id to cookies
-        setcookie("gameId", $gameId, time() + (86400 * 30)); // 86400 = 1 day
         return view('game');
     }
 
@@ -231,28 +232,29 @@ class GameController extends Controller
                 'message' => 'Not your turn'
             ]);
         }
+        else {
+            $emptySpaces = Rack::where("gameId", $gameId)->where("user", $user)->where("letter", null)->get();
 
-        $emptySpaces = Rack::where("gameId", $gameId)->where("user", $user)->where("letter", null)->get();
+            for ($i = 0; $i < count($emptySpaces) - 1; $i++) {
+                // get from bag
+                $tile = Bag::where("gameId", $gameId)->inRandomOrder()->first();
+                // if not empty, delete from bag
+                if (!$tile) return response()->json([
+                    'message' => 'No more letters'
+                ]);
+                $tile->delete($tile);
+                // add to rack
+                $emptySpaces[$i]->letter = $tile->letter;
+                $emptySpaces[$i]->value = $tile->value;
+                $emptySpaces[$i]->save();
+            }
+            // set turn after refill
+            if (count($emptySpaces) != 0) {
 
-        for ($i = 0; $i < count($emptySpaces) - 1; $i++) {
-            // get from bag
-            $tile = Bag::where("gameId", $gameId)->inRandomOrder()->first();
-            // if not empty, delete from bag
-            if (!$tile) return response()->json([
-                'message' => 'No more letters'
-            ]);
-            $tile->delete($tile);
-            // add to rack
-            $emptySpaces[$i]->letter = $tile->letter;
-            $emptySpaces[$i]->value = $tile->value;
-            $emptySpaces[$i]->save();
-        }
-        // set turn after refill
-        if (count($emptySpaces) != 0) {
-
-            if ($game->player1 == $user) $game->turn = $game->player2;
-            else $game->turn = $game->player1;
-            $game->save();
+                if ($game->player1 == $user) $game->turn = $game->player2;
+                else $game->turn = $game->player1;
+                $game->save();
+            }
         }
     }
 
@@ -293,4 +295,34 @@ class GameController extends Controller
         return $record;
     }
 
+    public function skipTurn($gameId) {
+        // set turn
+        $game = Game::where("id", $gameId)->first();
+        $user = Auth::user()->name;
+        if ($game->player1 ===  $user) { // user is player1
+            $game->turn = $game->player2;
+        }
+        else if ($game->player2 ===  $user) { // user is player2
+            $game->turn = $game->player1;
+        }
+        $game->save();
+        return [
+            "message" => "Success"
+        ];
+    }
+
+    public function swapTiles() {
+
+    }
+
+    public function swapTilesView($gameId) {
+        $user = Auth::user()->name;
+
+        $rack = Rack::where("gameId", $gameId)->where("user", $user)->where("letter", "!=", null)->get();
+
+        return view("swap-tiles", [
+            "rack" => $rack,
+            "gameId" => $gameId
+        ]);
+    }
 }

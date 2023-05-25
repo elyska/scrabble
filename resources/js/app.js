@@ -30,6 +30,7 @@ Vue.component('bag', require('./components/Bag.vue').default);
 Vue.component('scoreboard', require('./components/Scoreboard.vue').default);
 Vue.component('draw', require('./components/Draw.vue').default);
 Vue.component('modal', require('./components/Modal.vue').default);
+Vue.component('tile-swap', require('./components/TileSwap.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

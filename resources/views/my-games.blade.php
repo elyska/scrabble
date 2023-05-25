@@ -2,11 +2,11 @@
 
 @section('content')
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row">
                 <h1 class="mb-4">{{ __('My Games') }}</h1>
 
                 @forelse ($games as $game)
-                    <div class="col">
+                    <div class="col-3">
                         <div class="card mb-2 px-2">
                             <div class="card-body">
                                 <h5 class="card-title">{{ $game->player1 }} vs. {{ $game->player2 }}</h5>
