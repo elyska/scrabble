@@ -6000,10 +6000,11 @@ __webpack_require__.r(__webpack_exports__);
     swap: function swap() {
       var _this2 = this;
       axios.post('/swap-tiles/' + this.gameId, {
-        tilesToSwap: this.tilesToSwap
+        tilesToSwap: this.tilesToSwap,
+        tiles: this.tiles
       }).then(function (response) {
-        if (response.data.message) alert(response.data.message);else _this2.tiles = response.data;
         console.log(response.data);
+        if (response.data.message) alert(response.data.message);else window.location.href = '/game/' + _this2.gameId;
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -37199,7 +37200,7 @@ var render = function () {
         "button",
         {
           staticClass: "btn generic-input",
-          attrs: { type: "submit" },
+          attrs: { type: "submit", disabled: _vm.tilesToSwap.length === 0 },
           on: { click: _vm.swap },
         },
         [_vm._v(_vm._s(_vm.swapTranslation))]

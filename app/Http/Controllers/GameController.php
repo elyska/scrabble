@@ -335,14 +335,46 @@ class GameController extends Controller
         }
 
         $tilesToSwap = $request->get("tilesToSwap");
+        $tiles = $request->get("tiles");
 
+        //dd($tilesToSwap);
+
+        // get number of tiles in the bag
+        $bag = Bag::where("gameId", $gameId)->get();
         // if not enough letters, return with message "Select up to :limit letters" (cs, en)
+        if (count($tilesToSwap) > count($bag)) {
+            // language
+            if (isset($_COOKIE["language"]) && $_COOKIE["language"] === "cs") $message = 'Nedostatek písmen';
+            else $message = 'Not enough letters';
+            return response()->json([
+                'message' => $message
+            ]);
+        }
 
         // get new letters from the bag
-
-        // return letter to the bag
+        $newTiles = Bag::where("gameId", $gameId)->inRandomOrder()->limit(count($tilesToSwap))->get();
+        $newTilesCopy = unserialize(serialize($newTiles));
+        // return letters to the bag
+        for ($i = 0; $i < count($newTiles); $i++) {
+            if ($tilesToSwap[$i]["letter"] === null) $tilesToSwap[$i]["letter"] = "";
+            $newTiles[$i]->letter = $tilesToSwap[$i]["letter"];
+            $newTiles[$i]->value = $tilesToSwap[$i]["value"];
+            $newTiles[$i]->save();
+        }
 
         // update rack
+        $rack = Rack::where("gameId", $gameId)->where("user", $user)->get();
+        $newRack = array_merge($tiles, $newTilesCopy->toArray());
+        for ($i = 0; $i < count($rack) - 1; $i++) {
+            if($rack[$i]->letter !== null) {
+                // add to rack
+                $rack[$i]->letter = $newRack[$i]["letter"];
+                $rack[$i]->value = $newRack[$i]["value"];
+                $rack[$i]->save();
+            }
+        }
+        // set turn to opponent
+
     }
     public function getTilesToSwap($gameId) {
         $user = Auth::user()->name;

@@ -10818,6 +10818,12 @@ h1, .h1 {
   font-size: 18px !important;
   border: none !important;
 }
+.generic-input:disabled {
+  background: grey;
+}
+.generic-input:disabled:hover {
+  cursor: not-allowed;
+}
 
 .form-check .form-check-input {
   height: 20px;

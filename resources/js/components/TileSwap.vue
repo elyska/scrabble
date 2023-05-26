@@ -18,7 +18,7 @@
         </div>
 
         <div class="d-flex justify-content-between">
-            <button @click="swap" type="submit" class="btn generic-input">{{ swapTranslation }}</button>
+            <button @click="swap" type="submit" class="btn generic-input" :disabled="tilesToSwap.length === 0">{{ swapTranslation }}</button>
             <a :href="'/game/' + gameId" class="btn generic-input game-button">{{ backTranslation }}</a>
          </div>
     </div>
@@ -47,11 +47,11 @@ export default {
         },
         swap() {
             axios
-                .post('/swap-tiles/' + this.gameId, {tilesToSwap: this.tilesToSwap})
+                .post('/swap-tiles/' + this.gameId, {tilesToSwap: this.tilesToSwap, tiles: this.tiles})
                 .then(response => {
-                    if (response.data.message) alert(response.data.message)
-                    else this.tiles = response.data
                     console.log( response.data)
+                    if (response.data.message) alert(response.data.message)
+                    else window.location.href = '/game/' + this.gameId;
                 })
                 .catch(error => console.log(error))
         },

@@ -42,6 +42,14 @@ h1 {
     padding: 10px 20px !important;
     font-size: 18px !important;
     border: none !important;
+
+    &:disabled {
+        background: grey;
+
+        &:hover {
+            cursor: not-allowed;
+        }
+    }
 }
 .form-check .form-check-input {
     height: 20px;
