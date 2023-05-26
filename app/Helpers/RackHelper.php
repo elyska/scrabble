@@ -6,7 +6,7 @@ use App\Models\Bag;
 use App\Models\Rack;
 
 class RackHelper {
-    public function createNew($user, $gameId) {
+    public static function createNew($user, $gameId) {
         // get random letters from bag
         $rack = Bag::where("gameId", $gameId)->inRandomOrder()->limit(7)->get();
         for ($i = 0; $i < count($rack); $i++) {
