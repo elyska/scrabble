@@ -50,6 +50,10 @@
     color: $letter;
     border-radius: 3px;
     position: relative;
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 .letter p {
     margin: 0;

@@ -68,14 +68,14 @@ class GameController extends Controller
         RackHelper::createNew($opponent, $gameId);
 
         // save game id to cookies
-        setcookie("gameId", $gameId, time() + (86400 * 30)); // 86400 = 1 day
+        setcookie("gameId", $gameId, time() + (86400 * 30), "/"); // 86400 = 1 day
 
         return redirect()->route('pre-game-draw', ['gameId' => $gameId]);
     }
 
     public function preGameDraw($gameId) {
         // save game id to cookies
-        setcookie("gameId", $gameId, time() + (86400 * 30)); // 86400 = 1 day
+        setcookie("gameId", $gameId, time() + (86400 * 30), "/"); // 86400 = 1 day
 
         $game = Game::where("id", $gameId)->first();
 
@@ -166,7 +166,7 @@ class GameController extends Controller
 
     public function getGame($gameId) {
         // save game id to cookies
-        setcookie("gameId", $gameId, time() + (86400 * 30), ""); // 86400 = 1 day
+        setcookie("gameId", $gameId, time() + (86400 * 30), "/"); // 86400 = 1 day
 
         $game = Game::where("id", $gameId)->first();
 
@@ -314,8 +314,18 @@ class GameController extends Controller
     public function swapTiles() {
 
     }
+    public function getTilesToSwap($gameId) {
+        $user = Auth::user()->name;
+
+        $rack = Rack::where("gameId", $gameId)->where("user", $user)->where("letter", "!=", null)->get();
+
+        return $rack;
+    }
 
     public function swapTilesView($gameId) {
+        // save game id to cookies
+        setcookie("gameId", $gameId, time() + (86400 * 30), "/"); // 86400 = 1 day
+
         $user = Auth::user()->name;
 
         $rack = Rack::where("gameId", $gameId)->where("user", $user)->where("letter", "!=", null)->get();

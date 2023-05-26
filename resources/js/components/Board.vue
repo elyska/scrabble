@@ -31,6 +31,7 @@ export default {
     ],
     data() {
         return {
+            gameId: $cookies.get("gameId"),
             board: this.createBoard(),
             rack: [],
         }

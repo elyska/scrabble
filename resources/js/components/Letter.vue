@@ -28,7 +28,7 @@ export default {
             evt.dataTransfer.setData('y', item.y)
             evt.dataTransfer.setData('letter', item.letter)
             evt.dataTransfer.setData('value', item.value)
-        }
+        },
     },
     mounted() {
     }

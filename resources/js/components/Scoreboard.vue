@@ -40,6 +40,7 @@ export default {
     ],
     data() {
         return {
+            gameId: $cookies.get("gameId"),
             scoreInput: null,
             playerName: null,
             opponentName: null,

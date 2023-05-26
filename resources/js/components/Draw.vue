@@ -63,6 +63,7 @@ export default {
     props: ["opponent", "player", "tooltip", "starts", "play"],
     data() {
         return {
+            gameId: $cookies.get("gameId"),
             playerTile: null,
             opponentTile: null
         }

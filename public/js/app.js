@@ -5372,6 +5372,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   mixins: [(__webpack_require__(/*! ../mixins/CreateBoard.vue */ "./resources/js/mixins/CreateBoard.vue")["default"])],
   data: function data() {
     return {
+      gameId: $cookies.get("gameId"),
       board: this.createBoard(),
       rack: []
     };
@@ -5607,6 +5608,7 @@ __webpack_require__.r(__webpack_exports__);
   props: ["opponent", "player", "tooltip", "starts", "play"],
   data: function data() {
     return {
+      gameId: $cookies.get("gameId"),
       playerTile: null,
       opponentTile: null
     };
@@ -5867,6 +5869,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   mixins: [(__webpack_require__(/*! ../mixins/CreateBoard.vue */ "./resources/js/mixins/CreateBoard.vue")["default"])],
   data: function data() {
     return {
+      gameId: $cookies.get("gameId"),
       scoreInput: null,
       playerName: null,
       opponentName: null,
@@ -5947,6 +5950,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _Letter_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Letter.vue */ "./resources/js/components/Letter.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5954,21 +5972,94 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [(__webpack_require__(/*! ../mixins/CreateBoard.vue */ "./resources/js/mixins/CreateBoard.vue")["default"])],
   data: function data() {
     return {
-      rack: []
+      gameId: $cookies.get("gameId"),
+      tiles: [],
+      tilesToSwap: []
     };
   },
   methods: {
     loadRack: function loadRack() {
       var _this = this;
-      axios.get('/rack/' + this.gameId).then(function (response) {
-        _this.rack = response.data;
+      axios.get('/tiles-to-swap/' + this.gameId).then(function (response) {
+        _this.tiles = response.data;
+        console.log(response.data);
       })["catch"](function (error) {
         return console.log(error);
       });
+    },
+    handleDragover: function handleDragover(e) {
+      console.log("handleDragover");
+      //if (this.tile.letter === null) e.preventDefault()
+    },
+    onDrop: function onDrop(evt) {
+      console.log("ondrop");
+
+      // place tile in the new position
+      var letter = evt.dataTransfer.getData('letter');
+      var value = parseInt(evt.dataTransfer.getData('value'));
+      var x = parseInt(evt.dataTransfer.getData('x'));
+      var y = parseInt(evt.dataTransfer.getData('y'));
+      var tile = {
+        letter: letter,
+        value: value,
+        x: x,
+        y: y
+      };
+
+      // remove tile
+      for (var i = 0; i < this.tiles.length; i++) {
+        if (this.tiles[i].x == x && this.tiles[i].y == y) {
+          this.tiles.splice(i, 1);
+          this.tilesToSwap.push(tile);
+          break;
+        }
+      }
+      console.log(this.tilesToSwap);
+      console.log(this.tiles);
+    },
+    onDropMyTiles: function onDropMyTiles(evt) {
+      console.log("onDropMyTiles");
+
+      // place tile in the new position
+      var letter = evt.dataTransfer.getData('letter');
+      var value = parseInt(evt.dataTransfer.getData('value'));
+      var x = parseInt(evt.dataTransfer.getData('x'));
+      var y = parseInt(evt.dataTransfer.getData('y'));
+      var tile = {
+        letter: letter,
+        value: value,
+        x: x,
+        y: y
+      };
+
+      // append
+      // const swapContainer = document.querySelector('#my-tiles')
+      // const mountNode = document.createElement('div')
+      // mountNode.id = 'mount-node'
+      // swapContainer.appendChild(mountNode)
+      //
+      // let draggedLetter = Vue.extend(Letter)
+      // console.log(draggedLetter)
+      // let letterToSwap = new draggedLetter({
+      //     propsData: {
+      //         tile: tile
+      //     }
+      // }).$mount('#mount-node')
+
+      // remove tile
+      for (var i = 0; i < this.tilesToSwap.length; i++) {
+        if (this.tilesToSwap[i].x == x && this.tilesToSwap[i].y == y) {
+          this.tilesToSwap.splice(i, 1);
+          this.tiles.push(tile);
+          break;
+        }
+      }
+      console.log(this.tilesToSwap);
+      console.log(this.tiles);
     }
   },
   mounted: function mounted() {
@@ -5996,9 +6087,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
-    return {
-      gameId: $cookies.get("gameId")
-    };
+    return {};
   },
   methods: {
     createBoard: function createBoard() {
@@ -37057,7 +37146,58 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_c("rack", { attrs: { tiles: _vm.rack } })], 1)
+  return _c("div", [
+    _c(
+      "div",
+      {
+        staticClass: "swap-drop-zone drop-zone",
+        attrs: { id: "my-tiles" },
+        on: {
+          drop: function ($event) {
+            return _vm.onDropMyTiles($event)
+          },
+          dragover: function ($event) {
+            $event.preventDefault()
+          },
+          dragenter: function ($event) {
+            $event.preventDefault()
+          },
+        },
+      },
+      _vm._l(_vm.tiles, function (tile) {
+        return _c("letter", { key: tile.x, attrs: { tile: tile } })
+      }),
+      1
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "swap-drop-zone drop-zone",
+        attrs: { id: "tiles-to-swap" },
+        on: {
+          drop: function ($event) {
+            return _vm.onDrop($event)
+          },
+          dragover: [
+            function ($event) {
+              return _vm.handleDragover($event)
+            },
+            function ($event) {
+              $event.preventDefault()
+            },
+          ],
+          dragenter: function ($event) {
+            $event.preventDefault()
+          },
+        },
+      },
+      _vm._l(_vm.tilesToSwap, function (tile) {
+        return _c("letter", { key: tile.x, attrs: { tile: tile } })
+      }),
+      1
+    ),
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

@@ -4,3 +4,17 @@
     gap: 5px;
     margin: 20px 0;
 }
+
+.selected-tile {
+    border: 2px solid red;
+}
+
+.swap-drop-zone {
+    width: $cell-size * 8 + 8 * 2 + 2 * 10px;
+    height: $cell-size + 30px;
+    border: 2px solid white;
+    border-radius: 10px;
+    margin: 20px;
+    display: flex;
+    gap: 5px;
+}

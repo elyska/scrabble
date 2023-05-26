@@ -36,7 +36,7 @@ Route::middleware([EnsureUserIsPlayer::class])->group(function () {
     Route::post('/draw/{gameId}', [App\Http\Controllers\GameController::class, 'draw'])->name('draw');
     Route::post('/score/{gameId}', [App\Http\Controllers\GameController::class, 'writeScore'])->name('write-score');
     Route::post('/skip-turn/{gameId}', [App\Http\Controllers\GameController::class, 'skipTurn'])->name('skip-turn');
-    Route::post('/swap-tiles/{gameId}', [App\Http\Controllers\GameController::class, 'swapTiles'])->name('swap-tiles');
+    Route::post('/swap-tiles', [App\Http\Controllers\GameController::class, 'swapTiles'])->name('swap-tiles');
 
     Route::get('/draw/{gameId}', [App\Http\Controllers\GameController::class, 'preGameDraw'])->name('pre-game-draw');
     Route::get('/load-drawn-letters/{gameId}', [App\Http\Controllers\GameController::class, 'loadDrawnLetters'])->name('load-drawn-letters');
@@ -45,4 +45,5 @@ Route::middleware([EnsureUserIsPlayer::class])->group(function () {
     Route::get('/board/{gameId}', [App\Http\Controllers\GameController::class, 'getBoard'])->name('board');
     Route::get('/scoreboard/{gameId}', [App\Http\Controllers\GameController::class, 'getScoreboard'])->name('scoreboard');
     Route::get('/swap-tiles/{gameId}', [App\Http\Controllers\GameController::class, 'swapTilesView'])->name('swap-tiles-view');
+    Route::get('/tiles-to-swap/{gameId}', [App\Http\Controllers\GameController::class, 'getTilesToSwap'])->name('tiles-to-swap');
 });
