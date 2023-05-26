@@ -314,9 +314,12 @@ class GameController extends Controller
             $game->turn = $game->player1;
         }
         $game->save();
-        return [
-            "message" => "Success"
-        ];
+        // language
+        if (isset($_COOKIE["language"]) && $_COOKIE["language"] === "cs") $message = 'Na řadě je protihráč';
+        else $message = "Is is your opponent's turn";
+        return response()->json([
+            'message' => $message
+        ]);
     }
 
     public function swapTiles(Request $request, $gameId) {
@@ -374,7 +377,9 @@ class GameController extends Controller
             }
         }
         // set turn to opponent
-
+        if ($game->player1 ===  $user) $game->turn = $game->player2;
+        else $game->turn = $game->player1;
+        $game->save();
     }
     public function getTilesToSwap($gameId) {
         $user = Auth::user()->name;
