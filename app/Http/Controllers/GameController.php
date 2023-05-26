@@ -228,8 +228,11 @@ class GameController extends Controller
         $game = Game::where("id", $gameId)->first();
 
         if ($game->turn != $user) {
+            // language
+            if (isset($_COOKIE["language"]) && $_COOKIE["language"] === "cs") $message = 'Nejsi na řadě';
+            else $message = 'Not your turn';
             return response()->json([
-                'message' => 'Not your turn'
+                'message' => $message
             ]);
         }
         else {
@@ -239,9 +242,14 @@ class GameController extends Controller
                 // get from bag
                 $tile = Bag::where("gameId", $gameId)->inRandomOrder()->first();
                 // if not empty, delete from bag
-                if (!$tile) return response()->json([
-                    'message' => 'No more letters'
-                ]);
+                if (!$tile) {
+                    // language
+                    if (isset($_COOKIE["language"]) && $_COOKIE["language"] === "cs") $message = 'Žádná další písmena';
+                    else $message = 'No more letters';
+                    return response()->json([
+                        'message' => $message
+                    ]);
+                }
                 $tile->delete($tile);
                 // add to rack
                 $emptySpaces[$i]->letter = $tile->letter;
@@ -311,8 +319,30 @@ class GameController extends Controller
         ];
     }
 
-    public function swapTiles() {
+    public function swapTiles(Request $request, $gameId) {
+        $user = Auth::user()->name;
 
+        // do not allow if not your turn
+        $game = Game::where("id", $gameId)->first();
+
+        if ($game->turn != $user) {
+            // language
+            if (isset($_COOKIE["language"]) && $_COOKIE["language"] === "cs") $message = 'Nejsi na řadě';
+            else $message = 'Not your turn';
+            return response()->json([
+                'message' => $message
+            ]);
+        }
+
+        $tilesToSwap = $request->get("tilesToSwap");
+
+        // if not enough letters, return with message "Select up to :limit letters" (cs, en)
+
+        // get new letters from the bag
+
+        // return letter to the bag
+
+        // update rack
     }
     public function getTilesToSwap($gameId) {
         $user = Auth::user()->name;
@@ -323,16 +353,21 @@ class GameController extends Controller
     }
 
     public function swapTilesView($gameId) {
+        $user = Auth::user()->name;
+
         // save game id to cookies
         setcookie("gameId", $gameId, time() + (86400 * 30), "/"); // 86400 = 1 day
 
-        $user = Auth::user()->name;
-
         $rack = Rack::where("gameId", $gameId)->where("user", $user)->where("letter", "!=", null)->get();
+
+        // get number of tiles in the bag
+        $bag = Bag::where("gameId", $gameId)->get();
+
 
         return view("swap-tiles", [
             "rack" => $rack,
-            "gameId" => $gameId
+            "gameId" => $gameId,
+            "remainingTiles" => count($bag)
         ]);
     }
 }

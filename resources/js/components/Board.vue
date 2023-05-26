@@ -16,8 +16,8 @@
         <div class="rack-container col-4">
             <rack :tiles="rack" @rackTileMoved="handleTileMoved"></rack>
             <div class="game-buttons">
-                <a :href="'/swap-tiles/' + gameId" class="btn generic-input game-button w-30">Swap tiles</a>
-                <button @click="skipTurn" class="btn generic-input game-button w-30">Skip my turn</button>
+                <a :href="'/swap-tiles/' + gameId" class="btn generic-input game-button w-30">{{ swapTranslation }}</a>
+                <button @click="skipTurn" class="btn generic-input game-button w-30">{{ skipTranslation }}</button>
             </div>
             <bag @bagClick="handleRefill"></bag>
         </div>
@@ -29,6 +29,7 @@ export default {
     mixins: [
         require('../mixins/CreateBoard.vue').default
     ],
+    props: ["swapTranslation", "skipTranslation"],
     data() {
         return {
             gameId: $cookies.get("gameId"),

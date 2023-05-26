@@ -5370,6 +5370,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mixins: [(__webpack_require__(/*! ../mixins/CreateBoard.vue */ "./resources/js/mixins/CreateBoard.vue")["default"])],
+  props: ["swapTranslation", "skipTranslation"],
   data: function data() {
     return {
       gameId: $cookies.get("gameId"),
@@ -5950,7 +5951,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _Letter_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Letter.vue */ "./resources/js/components/Letter.vue");
 //
 //
 //
@@ -5971,9 +5971,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ["swapTranslation", "backTranslation"],
   data: function data() {
     return {
       gameId: $cookies.get("gameId"),
@@ -5991,9 +5997,16 @@ __webpack_require__.r(__webpack_exports__);
         return console.log(error);
       });
     },
-    handleDragover: function handleDragover(e) {
-      console.log("handleDragover");
-      //if (this.tile.letter === null) e.preventDefault()
+    swap: function swap() {
+      var _this2 = this;
+      axios.post('/swap-tiles/' + this.gameId, {
+        tilesToSwap: this.tilesToSwap
+      }).then(function (response) {
+        if (response.data.message) alert(response.data.message);else _this2.tiles = response.data;
+        console.log(response.data);
+      })["catch"](function (error) {
+        return console.log(error);
+      });
     },
     onDrop: function onDrop(evt) {
       console.log("ondrop");
@@ -6036,20 +6049,6 @@ __webpack_require__.r(__webpack_exports__);
         y: y
       };
 
-      // append
-      // const swapContainer = document.querySelector('#my-tiles')
-      // const mountNode = document.createElement('div')
-      // mountNode.id = 'mount-node'
-      // swapContainer.appendChild(mountNode)
-      //
-      // let draggedLetter = Vue.extend(Letter)
-      // console.log(draggedLetter)
-      // let letterToSwap = new draggedLetter({
-      //     propsData: {
-      //         tile: tile
-      //     }
-      // }).$mount('#mount-node')
-
       // remove tile
       for (var i = 0; i < this.tilesToSwap.length; i++) {
         if (this.tilesToSwap[i].x == x && this.tilesToSwap[i].y == y) {
@@ -6087,7 +6086,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
-    return {};
+    return {
+      gameId: $cookies.get("gameId")
+    };
   },
   methods: {
     createBoard: function createBoard() {
@@ -36593,7 +36594,7 @@ var render = function () {
               staticClass: "btn generic-input game-button w-30",
               attrs: { href: "/swap-tiles/" + _vm.gameId },
             },
-            [_vm._v("Swap tiles")]
+            [_vm._v(_vm._s(_vm.swapTranslation))]
           ),
           _vm._v(" "),
           _c(
@@ -36602,7 +36603,7 @@ var render = function () {
               staticClass: "btn generic-input game-button w-30",
               on: { click: _vm.skipTurn },
             },
-            [_vm._v("Skip my turn")]
+            [_vm._v(_vm._s(_vm.skipTranslation))]
           ),
         ]),
         _vm._v(" "),
@@ -37179,14 +37180,9 @@ var render = function () {
           drop: function ($event) {
             return _vm.onDrop($event)
           },
-          dragover: [
-            function ($event) {
-              return _vm.handleDragover($event)
-            },
-            function ($event) {
-              $event.preventDefault()
-            },
-          ],
+          dragover: function ($event) {
+            $event.preventDefault()
+          },
           dragenter: function ($event) {
             $event.preventDefault()
           },
@@ -37197,6 +37193,27 @@ var render = function () {
       }),
       1
     ),
+    _vm._v(" "),
+    _c("div", { staticClass: "d-flex justify-content-between" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn generic-input",
+          attrs: { type: "submit" },
+          on: { click: _vm.swap },
+        },
+        [_vm._v(_vm._s(_vm.swapTranslation))]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "btn generic-input game-button",
+          attrs: { href: "/game/" + _vm.gameId },
+        },
+        [_vm._v(_vm._s(_vm.backTranslation))]
+      ),
+    ]),
   ])
 }
 var staticRenderFns = []

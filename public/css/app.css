@@ -10861,6 +10861,10 @@ button[type=submit]:hover {
   background: rgba(255, 255, 255, 0.6392156863);
 }
 
+.white-text {
+  color: white;
+}
+
 .player-box-1 {
   border: 2px solid #f33e3d;
   border-radius: 5px;
@@ -11143,7 +11147,8 @@ button[type=submit]:hover {
   height: 67px;
   border: 2px solid white;
   border-radius: 10px;
-  margin: 20px;
+  margin-bottom: 20px;
   display: flex;
   gap: 5px;
+  padding: 10px;
 }

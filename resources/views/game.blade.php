@@ -2,6 +2,6 @@
 
 @section('content')
     <div class="container">
-        <board></board>
+        <board swap-translation="{{ __("Swap tiles") }}" skip-translation="{{ __("Skip my turn") }}"></board>
     </div>
 @endsection

@@ -9,19 +9,25 @@
         </div>
 
 
-        <div class="swap-drop-zone drop-zone" id="tiles-to-swap" @drop="onDrop($event)"  @dragover="handleDragover($event)"
+        <div class="swap-drop-zone drop-zone" id="tiles-to-swap"
+             @drop="onDrop($event)"
              @dragover.prevent
              @dragenter.prevent>
 
             <letter v-for="tile in tilesToSwap" :key="tile.x" :tile="tile"></letter>
         </div>
+
+        <div class="d-flex justify-content-between">
+            <button @click="swap" type="submit" class="btn generic-input">{{ swapTranslation }}</button>
+            <a :href="'/game/' + gameId" class="btn generic-input game-button">{{ backTranslation }}</a>
+         </div>
     </div>
 </template>
 
 <script>
-import Letter from "./Letter.vue";
 
 export default {
+    props: ["swapTranslation", "backTranslation"],
     data() {
         return {
             gameId: $cookies.get("gameId"),
@@ -39,9 +45,15 @@ export default {
                 })
                 .catch(error => console.log(error))
         },
-        handleDragover(e) {
-            console.log("handleDragover")
-            //if (this.tile.letter === null) e.preventDefault()
+        swap() {
+            axios
+                .post('/swap-tiles/' + this.gameId, {tilesToSwap: this.tilesToSwap})
+                .then(response => {
+                    if (response.data.message) alert(response.data.message)
+                    else this.tiles = response.data
+                    console.log( response.data)
+                })
+                .catch(error => console.log(error))
         },
         onDrop(evt) {
             console.log("ondrop")
@@ -85,20 +97,6 @@ export default {
                 x: x,
                 y: y
             }
-
-            // append
-            // const swapContainer = document.querySelector('#my-tiles')
-            // const mountNode = document.createElement('div')
-            // mountNode.id = 'mount-node'
-            // swapContainer.appendChild(mountNode)
-            //
-            // let draggedLetter = Vue.extend(Letter)
-            // console.log(draggedLetter)
-            // let letterToSwap = new draggedLetter({
-            //     propsData: {
-            //         tile: tile
-            //     }
-            // }).$mount('#mount-node')
 
             // remove tile
             for (let i = 0; i < this.tilesToSwap.length; i++) {
