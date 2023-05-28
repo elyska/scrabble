@@ -41,12 +41,15 @@ class GameController extends Controller
 
         $opponent = $request->input('opponent');
 
+        // check opponent is different from the player
+        $user = Auth::user()->name;
+        if ($user === $opponent) throw ValidationException::withMessages(['opponent' => 'The opponent cannot be you.']);
+
         // check case sensitive uniqueness
         $dbUser = User::where("name", $opponent)->first();
         if ($dbUser && $dbUser->name != $opponent) throw ValidationException::withMessages(['opponent' => 'The selected opponent is invalid.']);
 
         // create game
-        $user = Auth::user()->name;
         $game = Game::create([
             'player1' => $user,
             'player2' => $opponent,

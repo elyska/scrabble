@@ -40,11 +40,12 @@
     background: $blue-tripple;
     @include dot($blue-tripple);
 }
-.double-word, .star {
+.double-word {
     background-color: $orange;
     @include dot($orange);
 }
 .star {
+    background-color: $orange;
     background-image: url('/images/scrabble-star.png');
     background-size: $cell-size - 8px $cell-size - 8px;
     background-repeat: no-repeat;

@@ -11003,10 +11003,10 @@ button[type=submit]:hover {
   border-radius: 100%;
 }
 
-.double-word, .star {
+.double-word {
   background-color: #ffb268;
 }
-.double-word .dot, .star .dot {
+.double-word .dot {
   height: 6px;
   width: 6px;
   background: #ffb268;
@@ -11017,6 +11017,7 @@ button[type=submit]:hover {
 }
 
 .star {
+  background-color: #ffb268;
   background-image: url("/images/scrabble-star.png");
   background-size: 29px 29px;
   background-repeat: no-repeat;
