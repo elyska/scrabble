@@ -10974,18 +10974,46 @@ button[type=submit]:hover {
   background: #4a9c6b;
   margin: 1px;
   display: inline-block;
+  position: relative;
 }
 
 .tripple-word {
   background: #f33e3d;
 }
+.tripple-word .dot {
+  height: 6px;
+  width: 6px;
+  background: #f33e3d;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  border-radius: 100%;
+}
 
 .tripple-letter {
   background: #24bae7;
 }
+.tripple-letter .dot {
+  height: 6px;
+  width: 6px;
+  background: #24bae7;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  border-radius: 100%;
+}
 
 .double-word, .star {
   background-color: #ffb268;
+}
+.double-word .dot, .star .dot {
+  height: 6px;
+  width: 6px;
+  background: #ffb268;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  border-radius: 100%;
 }
 
 .star {
@@ -10997,6 +11025,15 @@ button[type=submit]:hover {
 
 .double-letter {
   background: #a5e6ff;
+}
+.double-letter .dot {
+  height: 6px;
+  width: 6px;
+  background: #a5e6ff;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  border-radius: 100%;
 }
 
 .rack-cell {

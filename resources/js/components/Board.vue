@@ -20,6 +20,7 @@
                 <button @click="skipTurn" class="btn generic-input game-button w-30">{{ skipTranslation }}</button>
             </div>
             <bag @bagClick="handleRefill"></bag>
+            <p class="white-text">{{ remainingTranslation }}{{ remaining }} </p>
         </div>
     </div>
 </template>
@@ -29,12 +30,13 @@ export default {
     mixins: [
         require('../mixins/CreateBoard.vue').default
     ],
-    props: ["swapTranslation", "skipTranslation"],
+    props: ["swapTranslation", "skipTranslation", "remainingTranslation"],
     data() {
         return {
             gameId: $cookies.get("gameId"),
             board: this.createBoard(),
             rack: [],
+            remaining: null,
         }
     },
     methods: {
@@ -75,12 +77,12 @@ export default {
             axios
                 .get('/board/' + this.gameId)
                 .then(response => {
-                    board = response.data
+                    board = response.data.board
+                    this.remaining = response.data.remaining
                     this.board = this.createBoard()
                     for (let tile of board) {
                         this.board[tile.y][tile.x].letter = tile.letter
                         this.board[tile.y][tile.x].value = tile.value
-                        console.log(tile)
                     }
                     console.log("loading")
                 })
@@ -110,6 +112,13 @@ export default {
                 console.log("BoardDelete")
                 this.board[tile.y][tile.x].letter = null
                 this.board[tile.y][tile.x].value = null
+            });
+        // bag updated
+        Echo.private(`remaining.${this.gameId}`)
+            .listen('RemainingUpdate', (data) => {
+                console.log("RemainingUpdate")
+                console.log(data.remaining)
+                this.remaining = data.remaining;
             });
         console.log("this.gameId")
         console.log(this.gameId)

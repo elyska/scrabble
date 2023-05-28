@@ -11,6 +11,7 @@
         text-shadow: $colour 3px 3px 8px;
     }
 }
+
 .player-box-1 {
     @include player-box($red);
 }

@@ -51,3 +51,12 @@ Broadcast::channel('score.{gameId}', function ($user, $gameId) {
     })->get();
     return count($game) != 0;
 });
+
+
+Broadcast::channel('remaining.{gameId}', function ($user, $gameId) {
+    $game = Game::where("id", $gameId)->where(function (Builder $query) {
+        $user = Auth::user()->name;
+        $query->where("player1", $user)->orWhere("player2", $user);
+    })->get();
+    return count($game) != 0;
+});

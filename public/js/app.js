@@ -5367,15 +5367,17 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mixins: [(__webpack_require__(/*! ../mixins/CreateBoard.vue */ "./resources/js/mixins/CreateBoard.vue")["default"])],
-  props: ["swapTranslation", "skipTranslation"],
+  props: ["swapTranslation", "skipTranslation", "remainingTranslation"],
   data: function data() {
     return {
       gameId: $cookies.get("gameId"),
       board: this.createBoard(),
-      rack: []
+      rack: [],
+      remaining: null
     };
   },
   methods: {
@@ -5415,7 +5417,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this3 = this;
       var board = [];
       axios.get('/board/' + this.gameId).then(function (response) {
-        board = response.data;
+        board = response.data.board;
+        _this3.remaining = response.data.remaining;
         _this3.board = _this3.createBoard();
         var _iterator = _createForOfIteratorHelper(board),
           _step;
@@ -5424,7 +5427,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             var tile = _step.value;
             _this3.board[tile.y][tile.x].letter = tile.letter;
             _this3.board[tile.y][tile.x].value = tile.value;
-            console.log(tile);
           }
         } catch (err) {
           _iterator.e(err);
@@ -5459,6 +5461,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       _this4.board[tile.y][tile.x].letter = null;
       _this4.board[tile.y][tile.x].value = null;
     });
+    // bag updated
+    Echo["private"]("remaining.".concat(this.gameId)).listen('RemainingUpdate', function (data) {
+      console.log("RemainingUpdate");
+      console.log(data.remaining);
+      _this4.remaining = data.remaining;
+    });
     console.log("this.gameId");
     console.log(this.gameId);
   }
@@ -5477,6 +5485,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
 //
 //
 //
@@ -36610,6 +36619,12 @@ var render = function () {
         ]),
         _vm._v(" "),
         _c("bag", { on: { bagClick: _vm.handleRefill } }),
+        _vm._v(" "),
+        _c("p", { staticClass: "white-text" }, [
+          _vm._v(
+            _vm._s(_vm.remainingTranslation) + _vm._s(_vm.remaining) + " "
+          ),
+        ]),
       ],
       1
     ),
@@ -36659,6 +36674,8 @@ var render = function () {
       _vm.tile.letter !== null
         ? _c("letter", { attrs: { tile: _vm.tile } })
         : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "dot" }),
     ],
     1
   )

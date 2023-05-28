@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\BoardDelete;
 use App\Events\BoardUpdate;
 use App\Events\Draw;
+use App\Events\RemainingUpdate;
 use App\Events\ScoreWrite;
 use App\Helpers\RackHelper;
 use App\Models\Alphabet;
@@ -220,7 +221,13 @@ class GameController extends Controller
     }
     public function getBoard($gameId) {
         $board = Board::where("gameId", $gameId)->get();
-        return $board;
+
+        // get counter
+        $bagCount = Bag::where("gameId", $gameId)->get()->count();
+        return [
+            "board" => $board,
+            "remaining" => $bagCount,
+        ];
     }
 
     public function refillRack($gameId) {
@@ -263,6 +270,9 @@ class GameController extends Controller
                 else $game->turn = $game->player1;
                 $game->save();
             }
+            // update counter
+            $bagCount = Bag::where("gameId", $gameId)->get()->count();
+            broadcast(new RemainingUpdate($bagCount, $gameId));
         }
     }
 

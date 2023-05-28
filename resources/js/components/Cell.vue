@@ -1,6 +1,7 @@
 <template>
     <div class="cell drop-zone" :class="cellType" @drop="onDrop($event)" @dragover="handleDragover($event)" @dragenter.prevent>
         <letter v-if="tile.letter !== null" :tile="tile"></letter>
+        <div class="dot"></div>
     </div>
 </template>
 

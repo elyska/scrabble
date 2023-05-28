@@ -18,17 +18,32 @@
     background: $light-green;
     margin: 1px;
     display: inline-block;
+    position: relative;
+}
+
+@mixin dot($colour) {
+    .dot {
+        height: 6px;
+        width: 6px;
+        background: $colour;
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        border-radius: 100%;
+    }
 }
 .tripple-word {
     background: $red;
+    @include dot($red);
 }
 .tripple-letter {
     background: $blue-tripple;
+    @include dot($blue-tripple);
 }
 .double-word, .star {
     background-color: $orange;
+    @include dot($orange);
 }
-
 .star {
     background-image: url('/images/scrabble-star.png');
     background-size: $cell-size - 8px $cell-size - 8px;
@@ -37,6 +52,7 @@
 }
 .double-letter {
     background: $blue-double;
+    @include dot($blue-double);
 }
 
 .rack-cell {
