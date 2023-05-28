@@ -80,6 +80,7 @@ export default {
                     for (let tile of board) {
                         this.board[tile.y][tile.x].letter = tile.letter
                         this.board[tile.y][tile.x].value = tile.value
+                        console.log(tile)
                     }
                     console.log("loading")
                 })

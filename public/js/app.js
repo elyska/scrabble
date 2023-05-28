@@ -5424,6 +5424,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             var tile = _step.value;
             _this3.board[tile.y][tile.x].letter = tile.letter;
             _this3.board[tile.y][tile.x].value = tile.value;
+            console.log(tile);
           }
         } catch (err) {
           _iterator.e(err);
@@ -36922,7 +36923,9 @@ var render = function () {
       },
     },
     [
-      _c("p", [_vm._v(_vm._s(_vm.tile.letter))]),
+      _vm.tile.letter !== "*"
+        ? _c("p", [_vm._v(_vm._s(_vm.tile.letter))])
+        : _vm._e(),
       _vm._v(" "),
       _vm.tile.value !== 0
         ? _c("p", { staticClass: "value" }, [_vm._v(_vm._s(_vm.tile.value))])

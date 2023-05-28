@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <h1>{{ __("Swap letters") }}</h1>
+            <h1>{{ __("Swap tiles") }}</h1>
             <p class="white-text">{{ __("Remaining tiles: ")  . $remainingTiles }}</p>
 
             <div class="col">
