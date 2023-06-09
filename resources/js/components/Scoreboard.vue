@@ -97,6 +97,9 @@ export default {
                     this.opponentName = response.data.opponentName
                     this.playerScores = response.data.playerScores
                     this.opponentScores = response.data.opponentScores
+                    this.playerTotal = response.data.playerTotal
+                    this.opponentTotal = response.data.opponentTotal
+                    this.finished = response.data.finished
                     this.scrollToBottom()
                 })
                 .catch(error => console.log(error))

@@ -290,12 +290,17 @@ class GameController extends Controller
 
         $playerScores = Scoreboard::where("gameId", $gameId)->where("player", $user)->get();
         $opponentScores = Scoreboard::where("gameId", $gameId)->where("player", $opponent)->get();
+        $playerTotal = Scoreboard::where("gameId", $gameId)->where("player", $user)->sum("score");
+        $opponentTotal = Scoreboard::where("gameId", $gameId)->where("player", $opponent)->sum("score");
 
         return [
             "playerName" => $user,
             "opponentName" => $opponent,
             "playerScores" => $playerScores,
-            "opponentScores" => $opponentScores
+            "opponentScores" => $opponentScores,
+            "playerTotal" => $playerTotal,
+            "opponentTotal" => $opponentTotal,
+            "finished" => $game->finished
         ];
     }
     public function writeScore($gameId, Request $request) {

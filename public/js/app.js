@@ -5946,6 +5946,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this.opponentName = response.data.opponentName;
         _this.playerScores = response.data.playerScores;
         _this.opponentScores = response.data.opponentScores;
+        _this.playerTotal = response.data.playerTotal;
+        _this.opponentTotal = response.data.opponentTotal;
+        _this.finished = response.data.finished;
         _this.scrollToBottom();
       })["catch"](function (error) {
         return console.log(error);
