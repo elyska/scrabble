@@ -37,6 +37,9 @@ Route::middleware([EnsureUserIsPlayer::class])->group(function () {
     Route::post('/score/{gameId}', [App\Http\Controllers\GameController::class, 'writeScore'])->name('write-score');
     Route::post('/skip-turn/{gameId}', [App\Http\Controllers\GameController::class, 'skipTurn'])->name('skip-turn');
     Route::post('/swap-tiles/{gameId}', [App\Http\Controllers\GameController::class, 'swapTiles'])->name('swap-tiles');
+    Route::post('/end-game-request/{gameId}', [App\Http\Controllers\GameController::class, 'endGameRequest'])->name('end-game-request');
+    Route::post('/end-game-confirm/{gameId}', [App\Http\Controllers\GameController::class, 'endGameConfirm'])->name('end-game-confirm');
+    Route::post('/end-game-reject/{gameId}', [App\Http\Controllers\GameController::class, 'endGameReject'])->name('end-game-reject');
 
     Route::get('/draw/{gameId}', [App\Http\Controllers\GameController::class, 'preGameDraw'])->name('pre-game-draw');
     Route::get('/load-drawn-letters/{gameId}', [App\Http\Controllers\GameController::class, 'loadDrawnLetters'])->name('load-drawn-letters');

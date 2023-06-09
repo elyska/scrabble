@@ -5836,8 +5836,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
@@ -5874,7 +5872,31 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mixins: [(__webpack_require__(/*! ../mixins/CreateBoard.vue */ "./resources/js/mixins/CreateBoard.vue")["default"])],
@@ -5885,7 +5907,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       playerName: null,
       opponentName: null,
       playerScores: [],
-      opponentScores: []
+      opponentScores: [],
+      playerTotal: null,
+      opponentTotal: null,
+      showModal: false,
+      showConfirmModal: false,
+      isDisabled: false,
+      opponent: null
     };
   },
   methods: {
@@ -5935,15 +5963,45 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         return console.log(error);
       });
       this.scrollToBottom();
+    },
+    endGameRequest: function endGameRequest() {
+      var _this3 = this;
+      axios.post('/end-game-request/' + this.gameId).then(function (response) {
+        console.log(response);
+
+        // this.playerTotal = response.data.userScore
+        // this.opponentTotal = response.data.opponentScore
+
+        //this.quitDisabled = true;
+        _this3.controlModal();
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    endGameConfirm: function endGameConfirm() {},
+    endGameReject: function endGameReject() {
+      this.controlConfirmModal();
+    },
+    controlModal: function controlModal() {
+      this.showModal = !this.showModal;
+    },
+    controlConfirmModal: function controlConfirmModal() {
+      this.showConfirmModal = !this.showConfirmModal;
     }
   },
   mounted: function mounted() {
-    var _this3 = this;
+    var _this4 = this;
     this.loadScoreboard();
     Echo["private"]("score.".concat(this.gameId)).listen('ScoreWrite', function (data) {
       console.log("ScoreWrite");
       console.log(data);
-      _this3.loadScoreboard();
+      _this4.loadScoreboard();
+    });
+    Echo["private"]("end-game-request.".concat(this.gameId)).listen('EndGameRequest', function (data) {
+      console.log("EndGameRequest");
+      console.log(data);
+      _this4.opponent = data.user.name;
+      _this4.controlConfirmModal();
     });
   }
 });
@@ -37062,90 +37120,203 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container scoreboard-container" }, [
-    _c("table", { staticClass: "scoreboard" }, [
-      _c("tr", [
-        _c("th", [_vm._v(_vm._s(_vm.playerName))]),
-        _vm._v(" "),
-        _c("th", [_vm._v(_vm._s(_vm.opponentName))]),
-      ]),
-      _vm._v(" "),
-      _c("tr", { staticClass: "score-list" }, [
-        _c("td", [
-          _c(
-            "div",
-            { staticClass: "score-list-container" },
-            _vm._l(_vm.playerScores, function (record) {
-              return _c("p", { key: record.id }, [_vm._v(_vm._s(record.score))])
-            }),
-            0
-          ),
+  return _c(
+    "div",
+    { staticClass: "container scoreboard-container" },
+    [
+      _c("table", { staticClass: "scoreboard" }, [
+        _c("tr", [
+          _c("th", [_vm._v(_vm._s(_vm.playerName))]),
+          _vm._v(" "),
+          _c("th", [_vm._v(_vm._s(_vm.opponentName))]),
         ]),
         _vm._v(" "),
-        _c("td", [
-          _c(
-            "div",
-            { staticClass: "score-list-container" },
-            _vm._l(_vm.opponentScores, function (record) {
-              return _c("p", { key: record.id }, [_vm._v(_vm._s(record.score))])
-            }),
-            0
-          ),
+        _c("tr", { staticClass: "score-list" }, [
+          _c("td", [
+            _c(
+              "div",
+              { staticClass: "score-list-container" },
+              _vm._l(_vm.playerScores, function (record) {
+                return _c("p", { key: record.id }, [
+                  _vm._v(_vm._s(record.score)),
+                ])
+              }),
+              0
+            ),
+          ]),
+          _vm._v(" "),
+          _c("td", [
+            _c(
+              "div",
+              { staticClass: "score-list-container" },
+              _vm._l(_vm.opponentScores, function (record) {
+                return _c("p", { key: record.id }, [
+                  _vm._v(_vm._s(record.score)),
+                ])
+              }),
+              0
+            ),
+          ]),
         ]),
-      ]),
-      _vm._v(" "),
-      _c("tr", [
-        _c("td", [
-          _c("input", {
-            directives: [
+        _vm._v(" "),
+        _c("tr", [
+          _c("td", [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.scoreInput,
+                  expression: "scoreInput",
+                },
+              ],
+              staticClass: "form-control score-input",
+              attrs: { type: "number", disabled: _vm.isDisabled },
+              domProps: { value: _vm.scoreInput },
+              on: {
+                keyup: function ($event) {
+                  if (
+                    !$event.type.indexOf("key") &&
+                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                  ) {
+                    return null
+                  }
+                  return _vm.writeScore.apply(null, arguments)
+                },
+                input: function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.scoreInput = $event.target.value
+                },
+              },
+            }),
+          ]),
+          _vm._v(" "),
+          _c("td", [
+            _c(
+              "button",
               {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.scoreInput,
-                expression: "scoreInput",
+                staticClass: "btn end-game-btn",
+                attrs: { disabled: _vm.isDisabled },
+                on: { click: _vm.controlModal },
               },
-            ],
-            staticClass: "form-control score-input",
-            attrs: { type: "number" },
-            domProps: { value: _vm.scoreInput },
-            on: {
-              keyup: function ($event) {
-                if (
-                  !$event.type.indexOf("key") &&
-                  _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                ) {
-                  return null
-                }
-                return _vm.writeScore.apply(null, arguments)
-              },
-              input: function ($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.scoreInput = $event.target.value
-              },
-            },
-          }),
+              [_vm._v("Konec")]
+            ),
+          ]),
         ]),
-        _vm._v(" "),
-        _vm._m(0),
       ]),
-    ]),
-  ])
+      _vm._v(" "),
+      _vm.showModal
+        ? _c("modal", {
+            scopedSlots: _vm._u(
+              [
+                {
+                  key: "body",
+                  fn: function () {
+                    return [
+                      _c("h5", [
+                        _vm._v(
+                          "\n                    Opravdu chcete ukončit hru?\n                "
+                        ),
+                      ]),
+                      _vm._v(" "),
+                      _c("p", [
+                        _vm._v("Hra skončí, pokud protihráč bude souhlasit."),
+                      ]),
+                    ]
+                  },
+                  proxy: true,
+                },
+                {
+                  key: "footer",
+                  fn: function () {
+                    return [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn end-game-btn",
+                          on: { click: _vm.endGameRequest },
+                        },
+                        [_vm._v("Ano")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn game-button",
+                          on: { click: _vm.controlModal },
+                        },
+                        [_vm._v("Ne")]
+                      ),
+                    ]
+                  },
+                  proxy: true,
+                },
+              ],
+              null,
+              false,
+              2743490293
+            ),
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.showConfirmModal
+        ? _c("modal", {
+            scopedSlots: _vm._u(
+              [
+                {
+                  key: "body",
+                  fn: function () {
+                    return [
+                      _c("h5", [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(_vm.opponent) +
+                            " žádá o ukončení hry\n                "
+                        ),
+                      ]),
+                    ]
+                  },
+                  proxy: true,
+                },
+                {
+                  key: "footer",
+                  fn: function () {
+                    return [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn end-game-btn",
+                          on: { click: _vm.endGameConfirm },
+                        },
+                        [_vm._v("Souhlasím")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn game-button",
+                          on: { click: _vm.endGameReject },
+                        },
+                        [_vm._v("Pokračovat ve hře")]
+                      ),
+                    ]
+                  },
+                  proxy: true,
+                },
+              ],
+              null,
+              false,
+              2542337191
+            ),
+          })
+        : _vm._e(),
+    ],
+    1
+  )
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("input", {
-        staticClass: "form-control score-input input-placeholder",
-        attrs: { type: "number" },
-      }),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -49395,18 +49566,6 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 				}
 /******/ 			}
 /******/ 			return result;
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
 /******/ 		};
 /******/ 	})();
 /******/ 	

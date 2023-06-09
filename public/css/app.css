@@ -10798,7 +10798,7 @@ h1, .h1 {
   color: white !important;
 }
 .nav-link:hover, .navbar-brand:hover {
-  color: #bfc935 !important;
+  color: #fdd900 !important;
 }
 
 .alert {
@@ -11174,6 +11174,14 @@ button[type=submit]:hover {
 
 .input-placeholder {
   visibility: hidden;
+}
+
+.end-game-btn {
+  background: #f33e3d;
+  color: white !important;
+}
+.end-game-btn:hover {
+  background: #c01e1d;
 }
 
 .swap-letter-container {

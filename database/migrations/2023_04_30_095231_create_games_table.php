@@ -20,6 +20,7 @@ class CreateGamesTable extends Migration
             $table->string("turn")->nullable();
             $table->string("player1Draw")->nullable();
             $table->string("player2Draw")->nullable();
+            $table->boolean("finished")->nullable()->default(false);
             $table->timestamps();
         });
     }

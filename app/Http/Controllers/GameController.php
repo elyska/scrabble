@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\BoardDelete;
 use App\Events\BoardUpdate;
 use App\Events\Draw;
+use App\Events\EndGameRequest;
 use App\Events\RemainingUpdate;
 use App\Events\ScoreWrite;
 use App\Helpers\RackHelper;
@@ -314,6 +315,27 @@ class GameController extends Controller
         broadcast(new ScoreWrite(Auth::user(), $record->score, $gameId))->toOthers();
 
         return $record;
+    }
+
+    public function endGameRequest($gameId) {
+        $user = Auth::user();
+        broadcast(new EndGameRequest($user, $gameId))->toOthers();
+    }
+
+    public function endGameConfirm($gameId) {
+        $user = Auth::user()->name;
+        $userScore = Scoreboard::where("gameId", $gameId)->where("player", $user)->sum("score");
+        $opponentScore = Scoreboard::where("gameId", $gameId)->where("player", "!=", $user)->sum("score");
+
+        // set quit
+        $game = Game::where("id", $gameId)->first();
+        $game->finished = true;
+        $game->save();
+
+        return response()->json([
+            'userScore' => $userScore,
+            'opponentScore' => $opponentScore,
+        ]);
     }
 
     public function skipTurn($gameId) {

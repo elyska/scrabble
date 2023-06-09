@@ -54,3 +54,12 @@
 .input-placeholder {
     visibility: hidden;
 }
+
+.end-game-btn {
+    background: $red;
+    color: white !important;
+
+    &:hover {
+        background: $darker-red;
+    }
+}

@@ -19,21 +19,44 @@
         </tr>
         <tr>
             <td>
-                <input class="form-control score-input" v-model="scoreInput" v-on:keyup.enter="writeScore" type="number"/>
+                <input class="form-control score-input" v-model="scoreInput" v-on:keyup.enter="writeScore" type="number" :disabled='isDisabled'/>
             </td>
-            <td><input class="form-control score-input input-placeholder" type="number" /></td>
+            <td><button class="btn end-game-btn" v-on:click="controlModal" :disabled='isDisabled'>Konec</button></td>
         </tr>
 <!--        <tr>-->
 <!--            <td></td>-->
 <!--            <td></td>-->
 <!--        </tr>-->
     </table>
+        <!-- Modal - End game request -->
+        <modal v-if="showModal" >
+            <template v-slot:body>
+                <h5>
+                    Opravdu chcete ukončit hru?
+                </h5>
+                <p>Hra skončí, pokud protihráč bude souhlasit.</p>
+            </template>
+            <template v-slot:footer>
+                <button class="btn end-game-btn" v-on:click="endGameRequest">Ano</button>
+                <button class="btn game-button" v-on:click="controlModal">Ne</button>
+            </template>
+        </modal>
+        <!-- Modal - End game confirm -->
+        <modal v-if="showConfirmModal" >
+            <template v-slot:body>
+                <h5>
+                    {{ opponent }} žádá o ukončení hry
+                </h5>
+            </template>
+            <template v-slot:footer>
+                <button class="btn end-game-btn" v-on:click="endGameConfirm">Souhlasím</button>
+                <button class="btn game-button" v-on:click="endGameReject">Pokračovat ve hře</button>
+            </template>
+        </modal>
     </div>
 </template>
 
 <script>
-import {forEach} from "lodash";
-
 export default {
     mixins: [
         require('../mixins/CreateBoard.vue').default
@@ -45,7 +68,13 @@ export default {
             playerName: null,
             opponentName: null,
             playerScores: [],
-            opponentScores: []
+            opponentScores: [],
+            playerTotal: null,
+            opponentTotal: null,
+            showModal: false,
+            showConfirmModal: false,
+            isDisabled: false,
+            opponent: null
         }
     },
     methods: {
@@ -85,6 +114,32 @@ export default {
                 .catch(error => console.log(error))
             this.scrollToBottom()
         },
+        endGameRequest() {
+            axios
+                .post('/end-game-request/' + this.gameId)
+                .then(response => {
+                    console.log(response)
+
+                    // this.playerTotal = response.data.userScore
+                    // this.opponentTotal = response.data.opponentScore
+
+                    //this.quitDisabled = true;
+                    this.controlModal();
+                })
+                .catch(error => console.log(error))
+        },
+        endGameConfirm() {
+
+        },
+        endGameReject() {
+            this.controlConfirmModal()
+        },
+        controlModal() {
+            this.showModal = !this.showModal
+        },
+        controlConfirmModal() {
+            this.showConfirmModal = !this.showConfirmModal
+        }
     },
     mounted() {
         this.loadScoreboard();
@@ -93,7 +148,15 @@ export default {
             .listen('ScoreWrite', (data) => {
                 console.log("ScoreWrite")
                 console.log(data)
-                this.loadScoreboard();
+                this.loadScoreboard()
+            });
+
+        Echo.private(`end-game-request.${this.gameId}`)
+            .listen('EndGameRequest', (data) => {
+                console.log("EndGameRequest")
+                console.log(data)
+                this.opponent = data.user.name
+                this.controlConfirmModal()
             });
     }
 }
