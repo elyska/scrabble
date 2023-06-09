@@ -333,7 +333,7 @@ class GameController extends Controller
         $game->finished = true;
         $game->save();
 
-        broadcast(new EndGameResult($user, $gameId, true, $userScore, $opponentScore))->toOthers();
+        broadcast(new EndGameResult($user, $gameId, true, $opponentScore, $userScore))->toOthers();
 
         return response()->json([
             'userScore' => $userScore,

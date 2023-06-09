@@ -45,7 +45,7 @@
         <modal v-if="showConfirmModal" >
             <template v-slot:body>
                 <h5>
-                    {{ opponent }} žádá o ukončení hry
+                    {{ opponentName }} žádá o ukončení hry
                 </h5>
             </template>
             <template v-slot:footer>
@@ -73,7 +73,6 @@ export default {
             opponentTotal: null,
             showModal: false,
             showConfirmModal: false,
-            opponent: null,
             finished: false
         }
     },
@@ -135,6 +134,8 @@ export default {
                     console.log(response)
                 })
                 .catch(error => console.log(error))
+            this.showConfirmModal = false
+            this.finished = true
         },
         endGameReject() {
             axios
@@ -143,6 +144,7 @@ export default {
                     console.log(response)
                 })
                 .catch(error => console.log(error))
+            this.showConfirmModal = false
         },
         controlModal() {
             this.showModal = !this.showModal
@@ -165,17 +167,15 @@ export default {
             .listen('EndGameRequest', (data) => {
                 console.log("EndGameRequest")
                 console.log(data)
-                this.opponent = data.user.name
-                this.finished = data.user.name
                 this.controlConfirmModal()
             });
         Echo.private(`end-game-result.${this.gameId}`)
             .listen('EndGameResult', (data) => {
-                console.log("EndGameRequest")
+                console.log("EndGameResult")
                 console.log(data)
                 this.playerTotal = data.userScore
                 this.opponentTotal = data.opponentScore
-                this.finished = data.finished
+                this.finished = data.accepted
             });
     }
 }
