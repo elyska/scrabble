@@ -6,6 +6,7 @@ use App\Events\BoardDelete;
 use App\Events\BoardUpdate;
 use App\Events\Draw;
 use App\Events\EndGameRequest;
+use App\Events\EndGameResult;
 use App\Events\RemainingUpdate;
 use App\Events\ScoreWrite;
 use App\Helpers\RackHelper;
@@ -323,19 +324,25 @@ class GameController extends Controller
     }
 
     public function endGameConfirm($gameId) {
-        $user = Auth::user()->name;
-        $userScore = Scoreboard::where("gameId", $gameId)->where("player", $user)->sum("score");
-        $opponentScore = Scoreboard::where("gameId", $gameId)->where("player", "!=", $user)->sum("score");
+        $user = Auth::user();
+        $userScore = Scoreboard::where("gameId", $gameId)->where("player", $user->name)->sum("score");
+        $opponentScore = Scoreboard::where("gameId", $gameId)->where("player", "!=", $user->name)->sum("score");
 
         // set quit
         $game = Game::where("id", $gameId)->first();
         $game->finished = true;
         $game->save();
 
+        broadcast(new EndGameResult($user, $gameId, true, $userScore, $opponentScore))->toOthers();
+
         return response()->json([
             'userScore' => $userScore,
             'opponentScore' => $opponentScore,
         ]);
+    }
+    public function endGameReject($gameId) {
+        $user = Auth::user();
+        broadcast(new EndGameResult($user, $gameId, false, 0, 0))->toOthers();
     }
 
     public function skipTurn($gameId) {

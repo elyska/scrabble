@@ -19,9 +19,9 @@
         </tr>
         <tr>
             <td>
-                <input class="form-control score-input" v-model="scoreInput" v-on:keyup.enter="writeScore" type="number" :disabled='isDisabled'/>
+                <input class="form-control score-input" v-model="scoreInput" v-on:keyup.enter="writeScore" type="number" :disabled='finished'/>
             </td>
-            <td><button class="btn end-game-btn" v-on:click="controlModal" :disabled='isDisabled'>Konec</button></td>
+            <td><button class="btn end-game-btn" v-on:click="controlModal" :disabled='finished'>Konec</button></td>
         </tr>
 <!--        <tr>-->
 <!--            <td></td>-->
@@ -73,8 +73,8 @@ export default {
             opponentTotal: null,
             showModal: false,
             showConfirmModal: false,
-            isDisabled: false,
-            opponent: null
+            opponent: null,
+            finished: false
         }
     },
     methods: {
@@ -129,10 +129,20 @@ export default {
                 .catch(error => console.log(error))
         },
         endGameConfirm() {
-
+            axios
+                .post('/end-game-confirm/' + this.gameId)
+                .then(response => {
+                    console.log(response)
+                })
+                .catch(error => console.log(error))
         },
         endGameReject() {
-            this.controlConfirmModal()
+            axios
+                .post('/end-game-reject/' + this.gameId)
+                .then(response => {
+                    console.log(response)
+                })
+                .catch(error => console.log(error))
         },
         controlModal() {
             this.showModal = !this.showModal
@@ -156,7 +166,16 @@ export default {
                 console.log("EndGameRequest")
                 console.log(data)
                 this.opponent = data.user.name
+                this.finished = data.user.name
                 this.controlConfirmModal()
+            });
+        Echo.private(`end-game-result.${this.gameId}`)
+            .listen('EndGameResult', (data) => {
+                console.log("EndGameRequest")
+                console.log(data)
+                this.playerTotal = data.userScore
+                this.opponentTotal = data.opponentScore
+                this.finished = data.finished
             });
     }
 }

@@ -5912,8 +5912,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       opponentTotal: null,
       showModal: false,
       showConfirmModal: false,
-      isDisabled: false,
-      opponent: null
+      opponent: null,
+      finished: false
     };
   },
   methods: {
@@ -5978,9 +5978,19 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         return console.log(error);
       });
     },
-    endGameConfirm: function endGameConfirm() {},
+    endGameConfirm: function endGameConfirm() {
+      axios.post('/end-game-confirm/' + this.gameId).then(function (response) {
+        console.log(response);
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
     endGameReject: function endGameReject() {
-      this.controlConfirmModal();
+      axios.post('/end-game-reject/' + this.gameId).then(function (response) {
+        console.log(response);
+      })["catch"](function (error) {
+        return console.log(error);
+      });
     },
     controlModal: function controlModal() {
       this.showModal = !this.showModal;
@@ -6001,7 +6011,15 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       console.log("EndGameRequest");
       console.log(data);
       _this4.opponent = data.user.name;
+      _this4.finished = data.user.name;
       _this4.controlConfirmModal();
+    });
+    Echo["private"]("end-game-result.".concat(this.gameId)).listen('EndGameResult', function (data) {
+      console.log("EndGameRequest");
+      console.log(data);
+      _this4.playerTotal = data.userScore;
+      _this4.opponentTotal = data.opponentScore;
+      _this4.finished = data.finished;
     });
   }
 });
@@ -37171,7 +37189,7 @@ var render = function () {
                 },
               ],
               staticClass: "form-control score-input",
-              attrs: { type: "number", disabled: _vm.isDisabled },
+              attrs: { type: "number", disabled: _vm.finished },
               domProps: { value: _vm.scoreInput },
               on: {
                 keyup: function ($event) {
@@ -37198,7 +37216,7 @@ var render = function () {
               "button",
               {
                 staticClass: "btn end-game-btn",
-                attrs: { disabled: _vm.isDisabled },
+                attrs: { disabled: _vm.finished },
                 on: { click: _vm.controlModal },
               },
               [_vm._v("Konec")]

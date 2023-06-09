@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -14,14 +15,24 @@ class EndGameResult implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $user;
+    public $gameId;
+    public $accepted;
+    public $opponentScore;
+    public $userScore;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(User $user, int $gameId, bool $accepted, int $userScore, int $opponentScore)
     {
-        //
+        $this->user = $user;
+        $this->gameId = $gameId;
+        $this->accepted = $accepted;
+        $this->opponentScore = $opponentScore;
+        $this->userScore = $userScore;
     }
 
     /**
@@ -31,6 +42,6 @@ class EndGameResult implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-name');
+        return new PrivateChannel('end-game-result.' . $this->gameId);
     }
 }
