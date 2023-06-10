@@ -5942,13 +5942,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       console.log("load scoreboard");
       console.log(this.gameId);
       axios.get('/scoreboard/' + this.gameId).then(function (response) {
+        console.log(response.data);
         _this.playerName = response.data.playerName;
         _this.opponentName = response.data.opponentName;
         _this.playerScores = response.data.playerScores;
         _this.opponentScores = response.data.opponentScores;
         _this.playerTotal = response.data.playerTotal;
         _this.opponentTotal = response.data.opponentTotal;
-        _this.finished = response.data.finished;
+        _this.finished = Boolean(response.data.finished);
         _this.scrollToBottom();
       })["catch"](function (error) {
         return console.log(error);
@@ -5981,13 +5982,16 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       });
     },
     endGameConfirm: function endGameConfirm() {
+      var _this4 = this;
       axios.post('/end-game-confirm/' + this.gameId).then(function (response) {
         console.log(response);
+        _this4.playerTotal = response.data.userScore;
+        _this4.opponentTotal = response.data.opponentScore;
+        _this4.finished = true;
       })["catch"](function (error) {
         return console.log(error);
       });
       this.showConfirmModal = false;
-      this.finished = true;
     },
     endGameReject: function endGameReject() {
       axios.post('/end-game-reject/' + this.gameId).then(function (response) {
@@ -6005,24 +6009,24 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     }
   },
   mounted: function mounted() {
-    var _this4 = this;
+    var _this5 = this;
     this.loadScoreboard();
     Echo["private"]("score.".concat(this.gameId)).listen('ScoreWrite', function (data) {
       console.log("ScoreWrite");
       console.log(data);
-      _this4.loadScoreboard();
+      _this5.loadScoreboard();
     });
     Echo["private"]("end-game-request.".concat(this.gameId)).listen('EndGameRequest', function (data) {
       console.log("EndGameRequest");
       console.log(data);
-      _this4.controlConfirmModal();
+      _this5.controlConfirmModal();
     });
     Echo["private"]("end-game-result.".concat(this.gameId)).listen('EndGameResult', function (data) {
       console.log("EndGameResult");
       console.log(data);
-      _this4.playerTotal = data.userScore;
-      _this4.opponentTotal = data.opponentScore;
-      _this4.finished = data.accepted;
+      _this5.playerTotal = data.userScore;
+      _this5.opponentTotal = data.opponentScore;
+      _this5.finished = data.accepted;
     });
   }
 });
@@ -37180,6 +37184,14 @@ var render = function () {
           ]),
         ]),
         _vm._v(" "),
+        _vm.finished
+          ? _c("tr", [
+              _c("td", [_c("strong", [_vm._v(_vm._s(_vm.playerTotal))])]),
+              _vm._v(" "),
+              _c("td", [_c("strong", [_vm._v(_vm._s(_vm.opponentTotal))])]),
+            ])
+          : _vm._e(),
+        _vm._v(" "),
         _c("tr", [
           _c("td", [
             _c("input", {
@@ -37238,7 +37250,7 @@ var render = function () {
                     return [
                       _c("h5", [
                         _vm._v(
-                          "\n                    Opravdu chcete ukončit hru?\n                "
+                          "\n                Opravdu chcete ukončit hru?\n            "
                         ),
                       ]),
                       _vm._v(" "),
@@ -37277,7 +37289,7 @@ var render = function () {
               ],
               null,
               false,
-              2743490293
+              1204730357
             ),
           })
         : _vm._e(),
@@ -37292,9 +37304,9 @@ var render = function () {
                     return [
                       _c("h5", [
                         _vm._v(
-                          "\n                    " +
+                          "\n                " +
                             _vm._s(_vm.opponentName) +
-                            " žádá o ukončení hry\n                "
+                            " žádá o ukončení hry\n            "
                         ),
                       ]),
                     ]
@@ -37329,7 +37341,7 @@ var render = function () {
               ],
               null,
               false,
-              1802457280
+              893853632
             ),
           })
         : _vm._e(),

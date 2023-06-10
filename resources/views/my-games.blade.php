@@ -11,7 +11,13 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ $game->player1 }} vs. {{ $game->player2 }}</h5>
                                 <p class="card-text">{{ date_format($game->created_at, 'd/m/Y H:i') }}</p>
-                                <a href="/draw/{{ $game->id }}" class="btn filled-button-link">{{ __("Continue Game") }}</a>
+                                <a href="/draw/{{ $game->id }}" class="btn filled-button-link">
+                                    @if ($game->finished)
+                                        {{ __("View Game") }}
+                                    @else
+                                        {{ __("Continue Game") }}
+                                    @endif
+                                </a>
                             </div>
                         </div>
                     </div>

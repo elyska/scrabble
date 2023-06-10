@@ -17,16 +17,16 @@
                 </div>
             </td>
         </tr>
+        <tr v-if="finished">
+            <td><strong>{{ playerTotal }}</strong></td>
+            <td><strong>{{ opponentTotal }}</strong></td>
+        </tr>
         <tr>
             <td>
                 <input class="form-control score-input" v-model="scoreInput" v-on:keyup.enter="writeScore" type="number" :disabled='finished'/>
             </td>
             <td><button class="btn end-game-btn" v-on:click="controlModal" :disabled='finished'>Konec</button></td>
         </tr>
-<!--        <tr>-->
-<!--            <td></td>-->
-<!--            <td></td>-->
-<!--        </tr>-->
     </table>
         <!-- Modal - End game request -->
         <modal v-if="showModal" >
@@ -93,13 +93,14 @@ export default {
             axios
                 .get('/scoreboard/' + this.gameId)
                 .then(response => {
+                    console.log(response.data)
                     this.playerName = response.data.playerName
                     this.opponentName = response.data.opponentName
                     this.playerScores = response.data.playerScores
                     this.opponentScores = response.data.opponentScores
                     this.playerTotal = response.data.playerTotal
                     this.opponentTotal = response.data.opponentTotal
-                    this.finished = response.data.finished
+                    this.finished = Boolean(response.data.finished)
                     this.scrollToBottom()
                 })
                 .catch(error => console.log(error))
@@ -135,10 +136,12 @@ export default {
                 .post('/end-game-confirm/' + this.gameId)
                 .then(response => {
                     console.log(response)
+                    this.playerTotal = response.data.userScore
+                    this.opponentTotal = response.data.opponentScore
+                    this.finished = true
                 })
                 .catch(error => console.log(error))
             this.showConfirmModal = false
-            this.finished = true
         },
         endGameReject() {
             axios
